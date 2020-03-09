@@ -13,6 +13,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     private ArrayList<ConvModel> itemsList;
     private Fragment mfragment;
+    View v;
 
     public SectionListDataAdapter(Fragment fragment, ArrayList<ConvModel> itemsList) {
         this.itemsList = itemsList;
@@ -21,28 +22,33 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
 
     @Override
     public SingleItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        final View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_single_card, null);
+        v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_single_card, null);
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
+        //final ConvModel singleItem = itemsList.get(i);
+        ConvModel singleItem = itemsList.get(i);
+        final String k=singleItem.getKor();
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(v.getContext(),ConvActivity.class);
-                mfragment.startActivity(intent);
-            }
-        });
         return mh;
     }
 
     @Override
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
-        ConvModel singleItem = itemsList.get(i);
+        final ConvModel singleItem = itemsList.get(i);
 
         holder.when.setText(singleItem.getWhen());
         holder.eng.setText(singleItem.getEng());
         holder.kor.setText(singleItem.getKor());
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                Intent intent = new Intent(v.getContext(),ConvActivity.class);
+                intent.putExtra("kor",singleItem.getKor());
+                intent.putExtra("eng",singleItem.getEng());
+                mfragment.startActivity(intent);
+            }
+        });
     }
 
     @Override

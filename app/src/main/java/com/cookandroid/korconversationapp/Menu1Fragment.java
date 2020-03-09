@@ -42,13 +42,12 @@ public class Menu1Fragment extends Fragment {
             situationModel.setSituation("Situation " + i);
 
             ArrayList<ConvModel> singleItem = new ArrayList<ConvModel>();
-            singleItem.add(new ConvModel("종업원 부를 때", "img1", "Excuse me","여기 주문할게요" ));
-            singleItem.add(new ConvModel("음식 주문할 때", "img2", "I'd like the coke","콜라 하나 주세요" ));
-            singleItem.add(new ConvModel("종업원 부를 때", "img1", "Excuse me","여기 주문할게요" ));
-            singleItem.add(new ConvModel("음식 주문할 때", "img2", "I'd like the coke","콜라 하나 주세요" ));
-            singleItem.add(new ConvModel("종업원 부를 때", "img1", "Excuse me","여기 주문할게요" ));
-            singleItem.add(new ConvModel("음식 주문할 때", "img2", "I'd like the coke","콜라 하나 주세요" ));
-
+            singleItem.add(new ConvModel("종업원 부를 때", "img1", "여기 주문할게요" ,"Excuse me"));
+            singleItem.add(new ConvModel("음식 주문할 때", "img2", "콜라 하나 주세요","I'd like the coke" ));
+            singleItem.add(new ConvModel("종업원 부를 때", "img1", "여기 주문할게요" ,"Excuse me"));
+            singleItem.add(new ConvModel("음식 주문할 때", "img2", "콜라 하나 주세요","I'd like the coke" ));
+            singleItem.add(new ConvModel("종업원 부를 때", "img1", "여기 주문할게요" ,"Excuse me"));
+            singleItem.add(new ConvModel("음식 주문할 때", "img2", "콜라 하나 주세요","I'd like the coke" ));
             situationModel.setAllItemsInSection(singleItem);
 
             allSampleData.add(situationModel);
