@@ -5,8 +5,8 @@
     android:layout_height="match_parent">
 
     <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottom_navigation_view"
-        android:layout_width="200dp"
+        android:id="@+id/top_navigation_view"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:background="?android:attr/windowBackground"
@@ -14,10 +14,10 @@
 
     <!-- 각각의 Fragment를 넣을 Container -->
     <FrameLayout
-        android:id="@+id/frame_layout"
+        android:id="@+id/drive_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="?attr/actionBarSize"/>
 
-    
+
 </android.support.design.widget.CoordinatorLayout>
