@@ -2,6 +2,7 @@ package com.cookandroid.korconversationapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +14,8 @@ public class ConvActivity extends AppCompatActivity {
     ImageButton back,speaker,restart,grade,check;
     Button repeat;
     TextView eng,kor;
+    String str_eng, str_kor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +31,8 @@ public class ConvActivity extends AppCompatActivity {
         kor=(TextView)findViewById(R.id.kor);
 
         Intent intent=new Intent(this.getIntent());
-        String str_eng=intent.getStringExtra("eng");
-        String str_kor=intent.getStringExtra("kor");
+        str_eng=intent.getStringExtra("eng");
+        str_kor=intent.getStringExtra("kor");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,5 +42,20 @@ public class ConvActivity extends AppCompatActivity {
 
         eng.setText(str_eng);
         kor.setText(str_kor);
+
+        Handler hand = new Handler();
+
+        hand.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
+                startActivity(i);
+                finish();
+            }
+        }, 5000);
+
+
         }
 }

@@ -19,6 +19,10 @@
         </activity>
         <activity android:name=".HomeActivity"/>
         <activity android:name=".ConvActivity"/>
+        <activity android:name=".NameActivity"/>
+        <activity android:name=".CharacterActivity"/>
+        <activity android:name=".UserInfoActivity"/>
+        <activity android:name=".AnalysisActivity"/>
 
     </application>
 

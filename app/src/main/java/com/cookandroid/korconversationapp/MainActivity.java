@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                Intent intent = new Intent(getApplicationContext(),NameActivity.class);
                 startActivityForResult(intent,1001); //다른 액티비티를 띄우기 위한 요청코드(상수)
             }
         });
