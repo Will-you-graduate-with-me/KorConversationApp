@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="30dp"
+    android:paddingTop="40dp"
+    android:background="#ffffff"
+    android:paddingRight="30dp">
+
+    <TextView
+        android:id="@+id/charTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="함께 공부하고 싶은"
+        android:layout_marginTop="50dp"
+        android:textSize="35sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/charTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="인물을 선택하세요"
+        android:textSize="35sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/charTitle" />
+
+    <ImageView
+        android:id="@+id/img1"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/taeyeon"
+        android:layout_marginTop="100dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/charTitle2"/>
+
+    <ImageView
+        android:id="@+id/img2"
+        android:layout_width="150dp"
+        android:layout_height="200dp"
+        android:src="@drawable/leejehoon"
+        android:layout_marginTop="100dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/charTitle2"/>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="태연"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="@+id/img1"
+        app:layout_constraintRight_toRightOf="@+id/img1"
+        app:layout_constraintTop_toBottomOf="@+id/img1" />
+    <TextView
+        android:id="@+id/text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이제훈"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toLeftOf="@+id/img2"
+        app:layout_constraintRight_toRightOf="@+id/img2"
+        app:layout_constraintTop_toBottomOf="@+id/img2" />
+
+
+    <Button
+        android:id="@+id/btn_charOK"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/btn_name"
+        android:text="확인"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text1" />
+
+
+
+</android.support.constraint.ConstraintLayout>

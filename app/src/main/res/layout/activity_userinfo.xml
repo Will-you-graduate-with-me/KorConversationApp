@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="30dp"
+    android:paddingTop="40dp"
+    android:background="#ffffff"
+    android:paddingRight="30dp">
+
+    <TextView
+        android:id="@+id/infoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="기본 정보와 관심분야를"
+        android:layout_marginTop="30dp"
+        android:textSize="35sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/infoTitle2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="체크해주세요"
+        android:textSize="35sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoTitle" />
+
+    <TextView
+        android:id="@+id/age"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:text="나이"
+        android:textSize="25sp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoTitle2"/>
+
+    <Spinner
+        android:id="@+id/age_box"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/spinner"
+        android:theme="@style/SpinnerTheme"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoTitle2"/>
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:text="성별"
+        android:textSize="25sp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/age"/>
+
+    <Spinner
+        android:id="@+id/gender_box"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="25dp"
+        android:background="@drawable/spinner"
+        android:theme="@style/SpinnerTheme"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/age"/>
+
+    <TextView
+        android:id="@+id/interest"
+        android:layout_width="150dp"
+        android:layout_height="35dp"
+        android:text="관심분야"
+        android:textSize="25sp"
+        android:layout_marginTop="25dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gender"/>
+
+    <Button
+        android:id="@+id/btn_infoOK"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/btn_name"
+        android:text="확인"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/interest" />
+
+</android.support.constraint.ConstraintLayout>
