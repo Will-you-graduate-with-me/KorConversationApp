@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:background="#e1e1e1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="한국어 문장"
+        android:textSize="25sp"
+        android:id="@+id/sentence_kor" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sentence_kor">
+
+        <TextView
+            android:id="@+id/sentence_eng"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="영어 문장"
+            android:textSize="20sp"
+            android:layout_gravity="center" />
+
+        <Button
+            android:id="@+id/btn_listen"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="듣" />
+
+        <Button
+            android:id="@+id/btn_play"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:text="재" />
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>
