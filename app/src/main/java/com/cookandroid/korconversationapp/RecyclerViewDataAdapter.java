@@ -2,6 +2,7 @@ package com.cookandroid.korconversationapp;
 
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,8 +16,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDataAdapter.ItemRowHolder> {
+public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private final int TYPE_HEADER = 0;
+    private final int TYPE_ITEM = 1;
     private ArrayList<SituationModel> dataList;
     private Fragment mfragment;
     private Context mContext;
@@ -27,33 +30,50 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
     }
 
     @Override
-    public ItemRowHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, null);
-        ItemRowHolder mh = new ItemRowHolder(v);
-        return mh;
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        mContext = viewGroup.getContext();
+        View v;
+        RecyclerView.ViewHolder holder;
+
+        if (viewType == TYPE_HEADER) {
+            v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.page_home_header, viewGroup, false);
+            holder = new HeaderViewHolder(v);
+        } else {
+            v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, null);
+            holder = new ItemRowHolder(v);
+        }
+
+        return holder;
     }
 
     @Override
-    public void onBindViewHolder(ItemRowHolder itemRowHolder, int i) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int i) {
 
-        final String sectionName = dataList.get(i).getSituation();
+        if (holder instanceof HeaderViewHolder) {
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+        } else {
+            ItemRowHolder itemRowHolder = (ItemRowHolder) holder;
 
-        ArrayList singleSectionItems = dataList.get(i).getAllItemsInSection();
 
-        itemRowHolder.itemTitle.setText(sectionName);
+            final String sectionName = dataList.get(i-1).getSituation();
 
-        SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mfragment, singleSectionItems);
+            ArrayList singleSectionItems = dataList.get(i-1).getAllItemsInSection();
 
-        itemRowHolder.recycler_view_list.setHasFixedSize(true);
-        itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
+            itemRowHolder.itemTitle.setText(sectionName);
 
+            SectionListDataAdapter itemListDataAdapter = new SectionListDataAdapter(mfragment, singleSectionItems);
+
+            itemRowHolder.recycler_view_list.setHasFixedSize(true);
+            itemRowHolder.recycler_view_list.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            itemRowHolder.recycler_view_list.setAdapter(itemListDataAdapter);
+
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return (null != dataList ? dataList.size() : 0);
+        return dataList.size() + 1;
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
@@ -72,6 +92,20 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerViewDa
 
         }
 
+    }
+    class HeaderViewHolder extends RecyclerView.ViewHolder {
+
+        HeaderViewHolder(View headerView) {
+            super(headerView);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (position == 0)
+            return TYPE_HEADER;
+        else
+            return TYPE_ITEM;
     }
 
 }
