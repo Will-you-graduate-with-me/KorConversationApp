@@ -40,6 +40,7 @@ public class UserInfoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
                 startActivityForResult(intent,1001); //다른 액티비티를 띄우기 위한 요청코드(상수)
+                finish();
             }
         });
 

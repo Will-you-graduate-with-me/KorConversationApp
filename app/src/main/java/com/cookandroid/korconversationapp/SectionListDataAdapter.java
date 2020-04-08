@@ -43,7 +43,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(v.getContext(),ConvActivity.class);
+                Intent intent = new Intent(v.getContext(),LoadingActivity.class);
                 intent.putExtra("kor",singleItem.getKor());
                 intent.putExtra("eng",singleItem.getEng());
                 mfragment.startActivity(intent);

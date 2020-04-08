@@ -23,6 +23,7 @@
         <activity android:name=".CharacterActivity"/>
         <activity android:name=".UserInfoActivity"/>
         <activity android:name=".AnalysisActivity"/>
+        <activity android:name=".LoadingActivity"/>
 
     </application>
 

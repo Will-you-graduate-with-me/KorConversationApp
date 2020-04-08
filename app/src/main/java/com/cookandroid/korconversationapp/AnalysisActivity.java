@@ -47,6 +47,7 @@ public class AnalysisActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent i = new Intent(AnalysisActivity.this, ConvActivity.class);
                 startActivity(i);
+                finish();
             }
         });
 
