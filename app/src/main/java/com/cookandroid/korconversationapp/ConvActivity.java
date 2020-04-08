@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,10 +17,21 @@ public class ConvActivity extends AppCompatActivity {
     Button repeat;
     TextView eng,kor;
     String str_eng, str_kor;
+    Handler hand;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
+        int newUiOptions = uiOptions;
+        boolean isImmersiveModeEnabled = ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
+
+        newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+
         setContentView(R.layout.activity_conv);
         back=(ImageButton)findViewById(R.id.backbtn);
         speaker=(ImageButton)findViewById(R.id.btn_speak);
@@ -33,9 +46,11 @@ public class ConvActivity extends AppCompatActivity {
         Intent intent=new Intent(this.getIntent());
         str_eng=intent.getStringExtra("eng");
         str_kor=intent.getStringExtra("kor");
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                hand.removeCallbacksAndMessages( null );
                 finish();
             }
         });
@@ -43,7 +58,7 @@ public class ConvActivity extends AppCompatActivity {
         eng.setText(str_eng);
         kor.setText(str_kor);
 
-        Handler hand = new Handler();
+        hand = new Handler();
 
         hand.postDelayed(new Runnable() {
 
@@ -54,7 +69,7 @@ public class ConvActivity extends AppCompatActivity {
                 startActivity(i);
                 finish();
             }
-        }, 5000);
+        }, 3000);
 
 
         }

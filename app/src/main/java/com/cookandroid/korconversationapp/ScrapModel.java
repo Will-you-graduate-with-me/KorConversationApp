@@ -21,7 +21,7 @@ public class ScrapModel {
         return eng;
     }
 
-    public void getEng(String eng) {
+    public void setEng(String eng) {
         this.eng = eng;
     }
 }
