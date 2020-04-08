@@ -11,6 +11,5 @@
     <string-array name="gender">
         <item>여성</item>
         <item>남성</item>
-        <item>기타</item>
     </string-array>
 </resources>
