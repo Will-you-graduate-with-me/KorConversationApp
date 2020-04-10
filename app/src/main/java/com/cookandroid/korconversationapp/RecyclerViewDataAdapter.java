@@ -19,14 +19,18 @@ import java.util.ArrayList;
 public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private final int TYPE_HEADER = 0;
-    private final int TYPE_ITEM = 1;
+    private final int TYPE_RECOMMEND = 1;
+    private final int TYPE_ITEM = 2;
+
     private ArrayList<SituationModel> dataList;
+    private ArrayList<RecommendModel> recommendList;
     private Fragment mfragment;
     private Context mContext;
 
-    public RecyclerViewDataAdapter(Fragment fragment, ArrayList<SituationModel> dataList) {
+    public RecyclerViewDataAdapter(Fragment fragment, ArrayList<SituationModel> dataList, ArrayList<RecommendModel> recommendList) {
         this.dataList = dataList;
         this.mfragment = fragment;
+        this.recommendList = recommendList;
     }
 
     @Override
@@ -38,6 +42,9 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
         if (viewType == TYPE_HEADER) {
             v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.page_home_header, viewGroup, false);
             holder = new HeaderViewHolder(v);
+        } else if (viewType == TYPE_RECOMMEND) {
+            v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item_recommend, null);
+            holder = new RecommendRowHolder(v);
         } else {
             v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.list_item, null);
             holder = new ItemRowHolder(v);
@@ -51,13 +58,23 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+        } else if (holder instanceof RecommendRowHolder) {
+            RecommendRowHolder recommendRowHolder = (RecommendRowHolder) holder;
+
+            ArrayList singleSectionItems = recommendList.get(i-1).getRecommendItems();
+
+            RecommendListDataAdapter recommendListDataAdapter = new RecommendListDataAdapter(mfragment, singleSectionItems);
+
+            recommendRowHolder.recycler_view_recommend.setHasFixedSize(true);
+            recommendRowHolder.recycler_view_recommend.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
+            recommendRowHolder.recycler_view_recommend.setAdapter(recommendListDataAdapter);
+
         } else {
             ItemRowHolder itemRowHolder = (ItemRowHolder) holder;
 
+            final String sectionName = dataList.get(i-2).getSituation();
 
-            final String sectionName = dataList.get(i-1).getSituation();
-
-            ArrayList singleSectionItems = dataList.get(i-1).getAllItemsInSection();
+            ArrayList singleSectionItems = dataList.get(i-2).getAllItemsInSection();
 
             itemRowHolder.itemTitle.setText(sectionName);
 
@@ -73,7 +90,22 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     @Override
     public int getItemCount() {
-        return dataList.size() + 1;
+        return dataList.size() + recommendList.size() +1;
+    }
+
+    public class RecommendRowHolder extends RecyclerView.ViewHolder {
+
+        protected TextView itemTitle;
+        protected RecyclerView recycler_view_recommend;
+
+
+        public RecommendRowHolder(View view) {
+            super(view);
+
+            this.recycler_view_recommend = (RecyclerView) view.findViewById(R.id.recycler_view_recommend);
+
+        }
+
     }
 
     public class ItemRowHolder extends RecyclerView.ViewHolder {
@@ -89,10 +121,10 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
             this.itemTitle = (TextView) view.findViewById(R.id.itemTitle);
             this.recycler_view_list = (RecyclerView) view.findViewById(R.id.recycler_view_list);
 
-
         }
 
     }
+
     class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         HeaderViewHolder(View headerView) {
@@ -104,6 +136,8 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
     public int getItemViewType(int position) {
         if (position == 0)
             return TYPE_HEADER;
+        else if (position == 1)
+            return TYPE_RECOMMEND;
         else
             return TYPE_ITEM;
     }

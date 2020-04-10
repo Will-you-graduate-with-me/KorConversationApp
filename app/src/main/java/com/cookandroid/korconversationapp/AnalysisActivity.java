@@ -30,7 +30,6 @@ public class AnalysisActivity extends AppCompatActivity {
                 new DividerItemDecoration(this,linearLayoutManager.getOrientation()));
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        // ArrayList에 person 객체(이름과 번호) 넣기
         ArrayList<AnalysisModel> sentence = new ArrayList<>();
         sentence.add(new AnalysisModel("안녕하세요."));
         sentence.add(new AnalysisModel("어떻게 지내세요."));
