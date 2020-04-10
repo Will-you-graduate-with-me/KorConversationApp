@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class Menu1Fragment extends Fragment {
     ArrayList<SituationModel> allSampleData;
+    ArrayList<RecommendModel> allRecommendData;
 
     @Nullable
     @Override
@@ -21,11 +22,13 @@ public class Menu1Fragment extends Fragment {
 
         View v=inflater.inflate(R.layout.page_home, container, false);
         allSampleData=new ArrayList<SituationModel>();
+        allRecommendData=new ArrayList<RecommendModel>();
         createDummyData();
+        recommendData();
 
         RecyclerView my_recycler_view = (RecyclerView)v.findViewById(R.id.my_recycler_view);
         my_recycler_view.setHasFixedSize(true);
-        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, allSampleData);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, allSampleData, allRecommendData);
         my_recycler_view.setLayoutManager(new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false));
         my_recycler_view.setAdapter(adapter);
 
@@ -53,5 +56,20 @@ public class Menu1Fragment extends Fragment {
             allSampleData.add(situationModel);
 
         }
+    }
+
+    public void recommendData() {
+
+        RecommendModel recommendModel = new RecommendModel();
+
+        ArrayList<ConvModel> singleItem_recommend = new ArrayList<ConvModel>();
+        singleItem_recommend.add(new ConvModel("쇼핑 할 때", "img1", "이거 얼마에요?" ,"How much is it?"));
+        singleItem_recommend.add(new ConvModel("감사 할 때", "img2", "고마워요","Thank you" ));
+        singleItem_recommend.add(new ConvModel("쇼핑 할 때", "img1", "이거 얼마에요?" ,"How much is it?"));
+        singleItem_recommend.add(new ConvModel("감사 할 때", "img2", "고마워요","Thank you" ));
+        recommendModel.setRecommendItems(singleItem_recommend);
+
+        allRecommendData.add(recommendModel);
+
     }
 }
