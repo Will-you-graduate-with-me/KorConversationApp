@@ -53,41 +53,42 @@ public class Menu1Fragment extends Fragment {
     public void createData() {
 
         String partInfo="";
+        String partialUnitInfo="";
         try{
             Task networkTask = new Task("part");
+            Task networkTask2 = new Task("unit");
+
             //networkTask.setSubUrl("unit");
             Map<String, String> params = new HashMap<String, String>();
             partInfo=networkTask.execute(params).get();
+            partialUnitInfo=networkTask2.execute(params).get();
         }catch (Exception e){
             e.printStackTrace();
         }
 
         try{
             JSONArray jsonArray=new JSONArray(partInfo);
-            PartInfoVO[] partInfos = new PartInfoVO[jsonArray.length()];
-
+            JSONArray jsonArray2=new JSONArray(partialUnitInfo);
 
             for(int i=0; i<jsonArray.length(); i++)
             {
                 JSONObject partInfoObject=(JSONObject)jsonArray.get(i);
-                System.out.println("객체"+partInfoObject);
-                System.out.println(partInfoObject.get("part_name"));
 
                 SituationModel situationModel = new SituationModel();
 
                 situationModel.setSituation("PART "+(i+1)+". "+partInfoObject.get("part_name"));
-
                 ArrayList<ConvModel> singleItem = new ArrayList<ConvModel>();
-                singleItem.add(new ConvModel("종업원 부를 때", "img1", "여기 주문할게요" ,"Excuse me"));
-                singleItem.add(new ConvModel("음식 주문할 때", "img2", "콜라 하나 주세요","I'd like the coke" ));
-                singleItem.add(new ConvModel("종업원 부를 때", "img1", "여기 주문할게요" ,"Excuse me"));
-                singleItem.add(new ConvModel("음식 주문할 때", "img2", "콜라 하나 주세요","I'd like the coke" ));
-                singleItem.add(new ConvModel("종업원 부를 때", "img1", "여기 주문할게요" ,"Excuse me"));
-                singleItem.add(new ConvModel("음식 주문할 때", "img2", "콜라 하나 주세요","I'd like the coke" ));
+
+                for(int j=0;j<jsonArray2.length();j++){
+                    JSONObject partialUnitInfoObj=(JSONObject)jsonArray2.get(j);
+                    if(Integer.parseInt(partialUnitInfoObj.get("part_no").toString())==(i+1)){
+                        singleItem.add(new ConvModel(partialUnitInfoObj.get("unit_name").toString(), "s1", "여기 주문할게요" ,"Excuse me"));
+
+                    }
+                }
+
                 situationModel.setAllItemsInSection(singleItem);
-
                 allSampleData.add(situationModel);
-
 
             }
         }catch (JSONException e) {
