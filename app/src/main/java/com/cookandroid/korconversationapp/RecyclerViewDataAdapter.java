@@ -14,7 +14,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -127,8 +133,41 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
 
+        protected TextView today_script_kor,today_script_eng;
+
         HeaderViewHolder(View headerView) {
+
             super(headerView);
+            this.today_script_eng=(TextView) headerView.findViewById(R.id.today_script_eng);
+            this.today_script_kor=(TextView)headerView.findViewById(R.id.today_script_kor);
+
+
+            String todayScriptInfo="";
+            try{
+                Task networkTask = new Task("today_script");
+
+                Map<String, String> params = new HashMap<String, String>();
+                todayScriptInfo=networkTask.execute(params).get();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            try{
+                JSONArray jsonArray=new JSONArray(todayScriptInfo);
+                int random_id=(int)((Math.random()*10)+1);
+                System.out.println("랜덤숫자"+random_id);
+                for(int i=0; i<jsonArray.length(); i++)
+                {
+                    JSONObject todayScriptObject=(JSONObject)jsonArray.get(i);
+                    if(Integer.parseInt(todayScriptObject.get("today_id").toString())==random_id){
+                        today_script_kor.setText(todayScriptObject.get("today_script_kor").toString());
+                        today_script_eng.setText(todayScriptObject.get("today_script_eng").toString());
+                }
+
+                }
+            }catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     }
 

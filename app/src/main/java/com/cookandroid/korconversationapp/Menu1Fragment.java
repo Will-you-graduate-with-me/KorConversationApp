@@ -49,7 +49,7 @@ public class Menu1Fragment extends Fragment {
 
     }
 
-    //part 별 데이터
+    //part 별 데이터, unit 별 데이터
     public void createData() {
 
         String partInfo="";
