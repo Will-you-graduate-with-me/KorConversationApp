@@ -18,7 +18,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -154,8 +156,15 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
 
             try{
                 JSONArray jsonArray=new JSONArray(todayScriptInfo);
-                int random_id=(int)((Math.random()*10)+1);
-                System.out.println("랜덤숫자"+random_id);
+                SimpleDateFormat format = new SimpleDateFormat("dd");
+                Date time=new Date();
+                String todaytime=format.format(time);
+
+                int random_id=0;
+                int last=Integer.parseInt(todaytime.substring(todaytime.length()-1));
+                random_id=last+1;
+                System.out.println(last+"오늘 날짜 끝자리에 1더한값 "+random_id);
+
                 for(int i=0; i<jsonArray.length(); i++)
                 {
                     JSONObject todayScriptObject=(JSONObject)jsonArray.get(i);

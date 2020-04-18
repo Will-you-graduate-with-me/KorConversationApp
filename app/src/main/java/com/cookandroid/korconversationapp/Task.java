@@ -39,7 +39,7 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
         // Http 요청 준비 작업
 
         HttpClient.Builder http = new HttpClient.Builder
-                ("POST", "http://192.168.219.103:8080/"+this.getSubUrl()); //포트번호,서블릿주소
+                ("POST", "http://192.168.0.134:8080/"+this.getSubUrl()); //포트번호,서블릿주소
         System.out.println("URL:: "+http.getUrl());
         // Parameter 를 전송한다.
         http.addAllParameters(maps[0]);

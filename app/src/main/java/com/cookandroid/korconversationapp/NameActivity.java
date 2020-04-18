@@ -6,14 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class NameActivity extends AppCompatActivity {
 
     Button btn_nameOk, btn_nameSkip;
+    private FirebaseAuth mAuth ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_name);
+        mAuth = FirebaseAuth.getInstance();
 
         btn_nameOk=(Button)findViewById(R.id.btn_nameOk);
         btn_nameSkip=(Button)findViewById(R.id.btn_nameSkip);
