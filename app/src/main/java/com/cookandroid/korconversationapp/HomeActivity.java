@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HomeActivity extends AppCompatActivity {
 
     Button btn_login;
@@ -21,10 +24,35 @@ public class HomeActivity extends AppCompatActivity {
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
     private Menu3Fragment menu3Fragment = new Menu3Fragment();
 
+    String user_id,nickname,gender,age;
+    int character_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Intent preIntent=getIntent();
+        user_id=preIntent.getStringExtra("user_id");
+        nickname=preIntent.getStringExtra("nickname");
+        gender=preIntent.getStringExtra("gender");
+        character_id=preIntent.getIntExtra("character_id",3);
+        age=preIntent.getStringExtra("age");
+
+        System.out.println("다 받았니"+user_id+"/"+nickname+"/"+gender+"/"+character_id+"/"+age);
+
+
+        //insert
+        Map<String, String> userparams = new HashMap<String, String>();
+        userparams.put("user_id",user_id);
+        userparams.put("nickname",nickname);
+        userparams.put("gender",gender);
+        userparams.put("character_id",Integer.toString(character_id));
+        userparams.put("age",age);
+        Task insertTask=new Task("insertUserID",userparams);
+        insertTask.execute(userparams);
+
+
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         // 첫 화면 지정
         FragmentTransaction transaction = fragmentManager.beginTransaction();

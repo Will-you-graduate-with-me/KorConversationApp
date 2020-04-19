@@ -5,13 +5,14 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Task extends AsyncTask< Map<String, String>, Integer, String> {
     String subUrl;
     String LoadData;
-
+    Map<String, String> maps;
     public String getSubUrl() {
         return subUrl;
     }
@@ -22,6 +23,10 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
 
     public Task(String subUrl) {
         this.subUrl=subUrl;
+    }
+    public Task(String subUrl, Map<String, String> maps) {
+        this.subUrl=subUrl;
+        this.maps=maps;
     }
     public Task(){}
     public String getString(){return LoadData;}
@@ -37,14 +42,15 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
     public String doInBackground( Map<String, String>... maps) { // 내가 전송하고 싶은 파라미터
 
         // Http 요청 준비 작업
-
         HttpClient.Builder http = new HttpClient.Builder
-                ("POST", "http://192.168.0.134:8080/"+this.getSubUrl()); //포트번호,서블릿주소
+                ("POST", "http://25.64.37.150:8080/"+this.getSubUrl()); //포트번호,서블릿주소
         System.out.println("URL:: "+http.getUrl());
         // Parameter 를 전송한다.
-        http.addAllParameters(maps[0]);
 
+        http.addAllParameters(maps[0]);
+        //http.addOrReplace("user_id","유저아이디");
         //Http 요청 전송
+
         HttpClient post = http.create();
         post.request();
 
@@ -53,6 +59,9 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
 
         // 응답 본문 가져오기
         LoadData = post.getBody();
+
+
+
         return LoadData;
     }
 

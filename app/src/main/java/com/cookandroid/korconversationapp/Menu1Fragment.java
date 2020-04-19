@@ -62,6 +62,12 @@ public class Menu1Fragment extends Fragment {
             Map<String, String> params = new HashMap<String, String>();
             partInfo=networkTask.execute(params).get();
             partialUnitInfo=networkTask2.execute(params).get();
+
+//            //insert
+//            Map<String, String> userparams = new HashMap<String, String>();
+//            userparams.put("user_id","abcdefg123");
+//            Task insertTask=new Task("insertUserID",userparams);
+//            insertTask.execute(userparams);
         }catch (Exception e){
             e.printStackTrace();
         }

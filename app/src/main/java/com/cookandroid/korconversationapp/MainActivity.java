@@ -49,9 +49,9 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
-        // 로그인 기록 있으면 건너뛰기
+//         //로그인 기록 있으면 건너뛰기
 //        if (mAuth.getCurrentUser() != null) {
-//            Intent intent = new Intent(getApplication(), NameActivity.class);
+//            Intent intent = new Intent(getApplication(), HomeActivity.class);
 //            startActivity(intent);
 //            finish();
 //        }
@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
     private void updateUI(FirebaseUser user) { //update ui code here
         if (user != null) {
             Intent intent = new Intent(this, NameActivity.class);
+            intent.putExtra("user_id",user.getUid());
             startActivity(intent);
             finish();
         }
