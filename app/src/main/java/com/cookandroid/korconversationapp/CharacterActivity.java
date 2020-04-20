@@ -45,13 +45,18 @@ public class CharacterActivity extends AppCompatActivity {
         btn_charOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+            if(character_id==0){
 
+            }
+            else {
                 Intent intent = new Intent(getApplicationContext(),UserInfoActivity.class);
                 intent.putExtra("character_id",character_id);
                 intent.putExtra("nickname",nickname);
                 intent.putExtra("user_id",user_id);
                 startActivityForResult(intent,1001); //다른 액티비티를 띄우기 위한 요청코드(상수)
                 finish();
+            }
+
             }
         });
 

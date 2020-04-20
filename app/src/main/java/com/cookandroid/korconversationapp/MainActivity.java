@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
                 signIn();
             }
         });
-//         //로그인 기록 있으면 건너뛰기
-//        if (mAuth.getCurrentUser() != null) {
-//            Intent intent = new Intent(getApplication(), HomeActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+         //로그인 기록 있으면 건너뛰기
+        if (mAuth.getCurrentUser() != null) {
+            Intent intent = new Intent(getApplication(), HomeActivity.class);
+            startActivity(intent);
+            finish();
+        }
         btn_login=(Button)findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
