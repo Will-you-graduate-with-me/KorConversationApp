@@ -39,8 +39,6 @@ public class HomeActivity extends AppCompatActivity {
         character_id=preIntent.getIntExtra("character_id",3);
         age=preIntent.getStringExtra("age");
 
-        System.out.println("다 받았니"+user_id+"/"+nickname+"/"+gender+"/"+character_id+"/"+age);
-
 
         //insert
         Map<String, String> userparams = new HashMap<String, String>();

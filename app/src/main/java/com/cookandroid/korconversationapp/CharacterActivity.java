@@ -22,7 +22,6 @@ public class CharacterActivity extends AppCompatActivity {
         Intent preIntent=getIntent();
         user_id=preIntent.getStringExtra("user_id");
         nickname=preIntent.getStringExtra("nickname");
-        System.out.println("character에서 받았나"+user_id+"/"+nickname);
 
         char1=(ImageButton)findViewById(R.id.img1);
         char2=(ImageButton)findViewById(R.id.img2);
@@ -30,14 +29,12 @@ public class CharacterActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 character_id=1;
-                System.out.println(character_id+"번 선택됨");
             }
         });
         char2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 character_id=2;
-                System.out.println(character_id+"번 선택됨");
 
             }
         });

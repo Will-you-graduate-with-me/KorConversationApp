@@ -150,11 +150,7 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
                 Map<String, String> params = new HashMap<String, String>();
                 todayScriptInfo=networkTask.execute(params).get();
 
-                //insert
-                Map<String, String> userparams = new HashMap<String, String>();
-                userparams.put("user_id","abcdefg123");
-                Task insertTask=new Task("insertUserID",userparams);
-                insertTask.execute(userparams);
+
             }catch (Exception e){
                 e.printStackTrace();
             }
