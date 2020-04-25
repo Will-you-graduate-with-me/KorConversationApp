@@ -28,7 +28,7 @@ import java.util.Map;
 public class Menu3Fragment extends Fragment {
 
     private FirebaseAuth mAuth ;
-    TextView logout,signout,point1,nameChange;
+    TextView logout,signout,point1,nameChange,charChange;
     String UserInfo="";
 
     @Override
@@ -66,7 +66,7 @@ public class Menu3Fragment extends Fragment {
         signout=(TextView)v.findViewById(R.id.signOut);
         point1=(TextView)v.findViewById(R.id.point1); //닉네임
         nameChange=(TextView)v.findViewById(R.id.nameChange);//닉네임 변경
-
+        charChange=(TextView)v.findViewById(R.id.charChange);//캐릭터 변경
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,7 +82,13 @@ public class Menu3Fragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        charChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),CharChangeActivity.class);
+                startActivity(intent);
+            }
+        });
         String UserInfo="";
 
         try{
