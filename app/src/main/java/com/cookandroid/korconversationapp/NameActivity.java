@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class NameActivity extends AppCompatActivity {
 
-    Button btn_nameOk, btn_nameSkip;
+    Button btn_nameOk;
     private FirebaseAuth mAuth ;
     EditText nameEdit;
     String user_id="";
@@ -27,7 +27,6 @@ public class NameActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         nameEdit=(EditText)findViewById(R.id.nameEdit);
         btn_nameOk=(Button)findViewById(R.id.btn_nameOk);
-        btn_nameSkip=(Button)findViewById(R.id.btn_nameSkip);
         btn_nameOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,14 +48,5 @@ public class NameActivity extends AppCompatActivity {
 
 
 
-        btn_nameSkip.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),CharacterActivity.class);
-
-                startActivityForResult(intent,1001); //다른 액티비티를 띄우기 위한 요청코드(상수)
-                finish();
-            }
-        });
     }
 }
