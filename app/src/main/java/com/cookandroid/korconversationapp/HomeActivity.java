@@ -24,8 +24,8 @@ public class HomeActivity extends AppCompatActivity {
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
     private Menu3Fragment menu3Fragment = new Menu3Fragment();
 
-    String user_id,nickname,gender,age;
-    int character_id;
+    String user_id,nickname;
+    int character_id,stay_duration,age;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,18 +35,18 @@ public class HomeActivity extends AppCompatActivity {
         Intent preIntent=getIntent();
         user_id=preIntent.getStringExtra("user_id");
         nickname=preIntent.getStringExtra("nickname");
-        gender=preIntent.getStringExtra("gender");
-        character_id=preIntent.getIntExtra("character_id",3);
-        age=preIntent.getStringExtra("age");
+        stay_duration=preIntent.getIntExtra("stay_duration",999);
+        character_id=preIntent.getIntExtra("character_id",999);
+        age=preIntent.getIntExtra("age",999);
 
 
         //insert
         Map<String, String> userparams = new HashMap<String, String>();
         userparams.put("user_id",user_id);
         userparams.put("nickname",nickname);
-        userparams.put("gender",gender);
+        userparams.put("stay_duration",Integer.toString(stay_duration));
         userparams.put("character_id",Integer.toString(character_id));
-        userparams.put("age",age);
+        userparams.put("age",Integer.toString(age));
         Task insertTask=new Task("insertUserID",userparams);
         insertTask.execute(userparams);
 

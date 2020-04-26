@@ -62,8 +62,8 @@ public class Menu3Fragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        logout=(TextView)v.findViewById(R.id.logOut);
-        signout=(TextView)v.findViewById(R.id.signOut);
+        logout=(TextView)v.findViewById(R.id.logOut);//로그아웃
+        signout=(TextView)v.findViewById(R.id.signOut);//회원탈퇴
         point1=(TextView)v.findViewById(R.id.point1); //닉네임
         nameChange=(TextView)v.findViewById(R.id.nameChange);//닉네임 변경
         charChange=(TextView)v.findViewById(R.id.charChange);//캐릭터 변경
@@ -75,6 +75,14 @@ public class Menu3Fragment extends Fragment {
                 startActivity(intent);
             }
         });
+//        signout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                revokeAccess();
+//                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                startActivity(intent);
+//            }
+//        });
         nameChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -108,16 +116,6 @@ public class Menu3Fragment extends Fragment {
         }catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-        //회원 탈퇴
-//        signout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                revokeAccess();
-//
-//            }
-//        });
 
         return v;
 

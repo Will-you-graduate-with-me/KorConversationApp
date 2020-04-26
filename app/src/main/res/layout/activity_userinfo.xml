@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,7 +13,7 @@
         android:id="@+id/infoTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="기본 정보와 관심분야를"
+        android:text="나이와 체류기간을"
         android:layout_marginTop="100dp"
         android:textSize="35sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -22,7 +23,7 @@
         android:id="@+id/infoTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="체크해주세요"
+        android:text="입력해주세요"
         android:textSize="35sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -31,44 +32,60 @@
     <TextView
         android:id="@+id/age"
         android:layout_width="150dp"
-        android:layout_height="35dp"
+        android:layout_height="50dp"
         android:text="나이"
         android:textSize="25sp"
         android:layout_marginTop="100dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/infoTitle2"/>
 
-    <Spinner
-        android:id="@+id/age_box"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/spinner"
-        android:theme="@style/SpinnerTheme"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/infoTitle2"/>
+    <EditText
+        android:id="@+id/age_edit"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="96dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/infoTitle2" />
 
     <TextView
+        android:id="@+id/textView2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="28dp"
+        android:text="세"
+        android:textSize="25sp"
+        android:layout_marginTop="96dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/infoTitle2" />
+    <TextView
         android:id="@+id/gender"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
-        android:text="성별"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="체류 기간"
         android:textSize="25sp"
         android:layout_marginTop="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/age"/>
 
-    <Spinner
-        android:id="@+id/gender_box"
-        android:layout_width="150dp"
-        android:layout_height="35dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/spinner"
-        android:theme="@style/SpinnerTheme"
+    <EditText
+        android:id="@+id/stay_duration_edit"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="48dp"
+        app:layout_constraintEnd_toStartOf="@+id/textView4"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/age"/>
+        app:layout_constraintTop_toBottomOf="@+id/age" />
 
-
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="28dp"
+        android:text="년"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
     <Button
         android:id="@+id/btn_infoOK"
         android:layout_width="150dp"

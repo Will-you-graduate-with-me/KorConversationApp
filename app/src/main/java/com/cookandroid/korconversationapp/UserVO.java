@@ -2,20 +2,20 @@ package com.cookandroid.korconversationapp;
 
 public class UserVO {
 
-	private int user_id;
+	private String user_id;
 	private String nickname;
 	private int character_id;
 	private int age;
-	private char gender;
-	private int interest_1;
-	private int interest_2;
-	private int interest_3;
+
+	private int stay_duration;
+	private int interest;
 	private int point;
 	private char app_theme;
-	public int getUser_id() {
+
+	public String getUser_id() {
 		return user_id;
 	}
-	public void setUser_id(int user_id) {
+	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 	public String getNickname() {
@@ -36,30 +36,14 @@ public class UserVO {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	public char getGender() {
-		return gender;
+
+	public int getInterest() {
+		return interest;
 	}
-	public void setGender(char gender) {
-		this.gender = gender;
+	public void setInterest(int interest) {
+		this.interest = interest;
 	}
-	public int getInterest_1() {
-		return interest_1;
-	}
-	public void setInterest_1(int interest_1) {
-		this.interest_1 = interest_1;
-	}
-	public int getInterest_2() {
-		return interest_2;
-	}
-	public void setInterest_2(int interest_2) {
-		this.interest_2 = interest_2;
-	}
-	public int getInterest_3() {
-		return interest_3;
-	}
-	public void setInterest_3(int interest_3) {
-		this.interest_3 = interest_3;
-	}
+
 	public int getPoint() {
 		return point;
 	}
@@ -72,6 +56,11 @@ public class UserVO {
 	public void setApp_theme(char app_theme) {
 		this.app_theme = app_theme;
 	}
-	
-	
+	public int getStay_duration() {
+		return stay_duration;
+	}
+	public void setStay_duration(int stay_duration) {
+		this.stay_duration = stay_duration;
+	}
+
 }

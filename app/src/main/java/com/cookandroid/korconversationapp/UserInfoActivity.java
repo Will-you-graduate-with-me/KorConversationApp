@@ -8,16 +8,17 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 public class UserInfoActivity extends AppCompatActivity {
     Button btn_infoOK;
-    Spinner ageSpinner, genderSpinner;
-    ArrayAdapter ageAdapter, genderAdapter;
-    String user_id,nickname,gender,age;
-    int character_id;
+    String user_id,nickname;
+    int stay_duration,age, character_id;
+    EditText age_edit,stay_duration_edit;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,30 +28,30 @@ public class UserInfoActivity extends AppCompatActivity {
         nickname=preIntent.getStringExtra("nickname");
         character_id=preIntent.getIntExtra("character_id",3);
 
-        ageSpinner = (Spinner)findViewById(R.id.age_box);
-        ageAdapter = ArrayAdapter.createFromResource(this,
-                R.array.age, R.layout.spinner_item);
-        ageAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ageSpinner.setAdapter(ageAdapter);
 
-        genderSpinner = (Spinner)findViewById(R.id.gender_box);
-        genderAdapter = ArrayAdapter.createFromResource(this,
-                R.array.gender, R.layout.spinner_item);
-        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        genderSpinner.setAdapter(genderAdapter);
-
-        age= ageSpinner.getSelectedItem().toString();
-        gender=genderSpinner.getSelectedItem().toString();
-
+        age_edit=(EditText)findViewById(R.id.age_edit);
+        stay_duration_edit=(EditText)findViewById(R.id.stay_duration_edit);
         btn_infoOK=(Button)findViewById(R.id.btn_infoOK);
         btn_infoOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+                if ( age_edit.getText().length() == 0 ) {
+
+                } else {
+                    age=Integer.parseInt(age_edit.getText().toString());
+                }
+                if ( stay_duration_edit.getText().length() == 0 ) {
+
+                } else {
+                    stay_duration=Integer.parseInt(stay_duration_edit.getText().toString());
+                }
                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
                 intent.putExtra("character_id",character_id);
                 intent.putExtra("nickname",nickname);
                 intent.putExtra("user_id",user_id);
-                intent.putExtra("gender",gender);
+                intent.putExtra("stay_duration",stay_duration);
                 intent.putExtra("age",age);
 
                 startActivityForResult(intent,1001); //다른 액티비티를 띄우기 위한 요청코드(상수)
