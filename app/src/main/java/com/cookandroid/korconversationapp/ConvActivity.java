@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -11,11 +12,20 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 public class ConvActivity extends AppCompatActivity {
 
     ImageButton back,speaker,restart,grade,check;
     Button repeat;
-    TextView eng,kor;
+    TextView eng,kor,eng_script,kor_script;
     String str_eng, str_kor,part_no,unit_no;
     Handler hand;
     TextView part_unit_no;
@@ -44,6 +54,10 @@ public class ConvActivity extends AppCompatActivity {
         part_unit_no=(TextView)findViewById(R.id.part_unit_no);
         eng=(TextView)findViewById(R.id.eng);
         kor=(TextView)findViewById(R.id.kor);
+        eng_script=(TextView)findViewById(R.id.eng_script);
+        kor_script=(TextView)findViewById(R.id.kor_script);
+        eng_script.setMovementMethod(new ScrollingMovementMethod());
+        kor_script.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent=new Intent(this.getIntent());
         str_eng=intent.getStringExtra("eng");
@@ -61,6 +75,53 @@ public class ConvActivity extends AppCompatActivity {
         part_unit_no.setText("Part "+part_no+" > Unit "+unit_no);
         eng.setText(str_eng);
         kor.setText(str_kor);
+
+        String scriptInfoKor="";
+        String scriptInfoEng="";
+        try{
+
+            Map<String, String> userparams_forKor = new HashMap<String, String>();
+            userparams_forKor.put("part_no",part_no);
+            userparams_forKor.put("unit_no",unit_no);
+            userparams_forKor.put("language","k");
+
+            Map<String, String> userparams_forEng = new HashMap<String, String>();
+            userparams_forEng.put("part_no",part_no);
+            userparams_forEng.put("unit_no",unit_no);
+            userparams_forEng.put("language","e");
+
+            Task TaskforKor=new Task("selectScript",userparams_forKor);
+            Task TaskforEng=new Task("selectScript",userparams_forEng);
+
+            scriptInfoKor=TaskforKor.execute(userparams_forKor).get();
+            scriptInfoEng=TaskforEng.execute(userparams_forEng).get();
+
+            //kor_script.setText(scriptInfoEng);
+           // kor_script.setText(scriptInfoKor);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try{
+            String scriptE="";
+            String scriptK="";
+            JSONArray jsonArrayKor=new JSONArray(scriptInfoKor);
+            JSONArray jsonArrayEng=new JSONArray(scriptInfoEng);
+
+            for(int i=0; i<jsonArrayKor.length(); i++) {
+                JSONObject scriptKor=(JSONObject)jsonArrayKor.get(i);
+                scriptK=scriptK+scriptKor.get("sentence").toString()+"\n";
+            }
+
+            for(int i=0; i<jsonArrayEng.length(); i++) {
+                JSONObject scriptEng=(JSONObject)jsonArrayEng.get(i);
+                scriptE=scriptE+scriptEng.get("sentence").toString()+"\n";
+
+            }
+            kor_script.setText(scriptK);
+            eng_script.setText(scriptE);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
 
 //        hand = new Handler();
 //

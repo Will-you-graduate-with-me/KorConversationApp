@@ -38,12 +38,12 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="200dp"
         android:src="@drawable/p1" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="match_parent"
         android:layout_marginVertical="10dp"
         app:cardElevation="0dp">
 
@@ -81,66 +81,82 @@
             <TextView
                 android:id="@+id/eng"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="28dp"
-                android:layout_marginTop="28dp"
+                android:layout_height="39dp"
                 android:text="What kind of food do you like?"
                 android:textSize="18sp"
+                tools:layout_editor_absoluteX="28dp"
+                tools:layout_editor_absoluteY="68dp" />
+
+            <TextView
+                android:id="@+id/eng_script"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="28dp"
+                android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/kor" />
+                app:layout_constraintTop_toBottomOf="@+id/kor_script" />
+
+            <TextView
+                android:id="@+id/kor_script"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/eng" />
+            <!--<ImageButton-->
+            <!--android:id="@+id/btn_restart"-->
+            <!--android:layout_width="27dp"-->
+            <!--android:layout_height="27dp"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:layout_marginBottom="74dp"-->
+            <!--android:background="#00ff0000"-->
+            <!--android:padding="0dp"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/restart"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/btn_grade" />-->
 
             <!--<ImageButton-->
-                <!--android:id="@+id/btn_restart"-->
-                <!--android:layout_width="27dp"-->
-                <!--android:layout_height="27dp"-->
-                <!--android:layout_marginEnd="12dp"-->
-                <!--android:layout_marginBottom="74dp"-->
-                <!--android:background="#00ff0000"-->
-                <!--android:padding="0dp"-->
-                <!--android:scaleType="fitCenter"-->
-                <!--android:src="@drawable/restart"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintEnd_toStartOf="@+id/btn_grade" />-->
+            <!--android:id="@+id/btn_grade"-->
+            <!--android:layout_width="27dp"-->
+            <!--android:layout_height="27dp"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:layout_marginBottom="74dp"-->
+            <!--android:background="#00ff0000"-->
+            <!--android:padding="0dp"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/a"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/btn_check" />-->
 
             <!--<ImageButton-->
-                <!--android:id="@+id/btn_grade"-->
-                <!--android:layout_width="27dp"-->
-                <!--android:layout_height="27dp"-->
-                <!--android:layout_marginEnd="12dp"-->
-                <!--android:layout_marginBottom="74dp"-->
-                <!--android:background="#00ff0000"-->
-                <!--android:padding="0dp"-->
-                <!--android:scaleType="fitCenter"-->
-                <!--android:src="@drawable/a"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintEnd_toStartOf="@+id/btn_check" />-->
-
-            <!--<ImageButton-->
-                <!--android:id="@+id/btn_check"-->
-                <!--android:layout_width="27dp"-->
-                <!--android:layout_height="27dp"-->
-                <!--android:layout_marginEnd="16dp"-->
-                <!--android:layout_marginBottom="74dp"-->
-                <!--android:background="#00ff0000"-->
-                <!--android:padding="0dp"-->
-                <!--android:scaleType="fitCenter"-->
-                <!--android:src="@drawable/check"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintEnd_toEndOf="parent" />-->
+            <!--android:id="@+id/btn_check"-->
+            <!--android:layout_width="27dp"-->
+            <!--android:layout_height="27dp"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:layout_marginBottom="74dp"-->
+            <!--android:background="#00ff0000"-->
+            <!--android:padding="0dp"-->
+            <!--android:scaleType="fitCenter"-->
+            <!--android:src="@drawable/check"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent" />-->
 
             <!--<Button-->
-                <!--android:id="@+id/btn_repeat"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_marginStart="8dp"-->
-                <!--android:layout_marginEnd="8dp"-->
-                <!--android:layout_marginBottom="8dp"-->
-                <!--android:background="@drawable/btn_login"-->
-                <!--android:text="Repeat After"-->
-                <!--android:textSize="25sp"-->
-                <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--app:layout_constraintEnd_toEndOf="parent"-->
-                <!--app:layout_constraintStart_toStartOf="parent" />-->
+            <!--android:id="@+id/btn_repeat"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginStart="8dp"-->
+            <!--android:layout_marginEnd="8dp"-->
+            <!--android:layout_marginBottom="8dp"-->
+            <!--android:background="@drawable/btn_login"-->
+            <!--android:text="Repeat After"-->
+            <!--android:textSize="25sp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintStart_toStartOf="parent" />-->
         </android.support.constraint.ConstraintLayout>
 
 
