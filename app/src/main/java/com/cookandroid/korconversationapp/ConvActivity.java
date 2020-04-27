@@ -16,8 +16,9 @@ public class ConvActivity extends AppCompatActivity {
     ImageButton back,speaker,restart,grade,check;
     Button repeat;
     TextView eng,kor;
-    String str_eng, str_kor;
+    String str_eng, str_kor,part_no,unit_no;
     Handler hand;
+    TextView part_unit_no;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,41 +36,44 @@ public class ConvActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conv);
         back=(ImageButton)findViewById(R.id.backbtn);
         speaker=(ImageButton)findViewById(R.id.btn_speak);
-        restart=(ImageButton)findViewById(R.id.btn_restart);
-        grade=(ImageButton)findViewById(R.id.btn_grade);
-        check=(ImageButton)findViewById(R.id.btn_check);
-        repeat=(Button)findViewById(R.id.btn_repeat);
+//        restart=(ImageButton)findViewById(R.id.btn_restart);
+//        grade=(ImageButton)findViewById(R.id.btn_grade);
+//        check=(ImageButton)findViewById(R.id.btn_check);
+//        repeat=(Button)findViewById(R.id.btn_repeat);
 
+        part_unit_no=(TextView)findViewById(R.id.part_unit_no);
         eng=(TextView)findViewById(R.id.eng);
         kor=(TextView)findViewById(R.id.kor);
 
         Intent intent=new Intent(this.getIntent());
         str_eng=intent.getStringExtra("eng");
         str_kor=intent.getStringExtra("kor");
+        part_no=intent.getStringExtra("part_no");
+        unit_no=intent.getStringExtra("unit_no");
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                hand.removeCallbacksAndMessages( null );
+                //hand.removeCallbacksAndMessages( null );
                 finish();
             }
         });
-
+        part_unit_no.setText("Part "+part_no+" > Unit "+unit_no);
         eng.setText(str_eng);
         kor.setText(str_kor);
 
-        hand = new Handler();
-
-        hand.postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
-                startActivity(i);
-                finish();
-            }
-        }, 3000);
+//        hand = new Handler();
+//
+//        hand.postDelayed(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                // TODO Auto-generated method stub
+//                Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
+//                startActivity(i);
+//                finish();
+//            }
+//        }, 3000);
 
 
         }

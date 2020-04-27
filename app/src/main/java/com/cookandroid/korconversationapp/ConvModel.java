@@ -6,10 +6,8 @@ public class ConvModel {
     private String image;
     private String kor;
     private String eng;
-
-    public ConvModel(){
-
-    }
+    private String part_no;
+    private String unit_no;
 
     public ConvModel( String when, String image, String kor, String eng) {
         this.when = when;
@@ -17,6 +15,35 @@ public class ConvModel {
         this.kor = kor;
         this.eng = eng;
     }
+    public ConvModel( String when, String image, String kor, String eng,String part_no, String unit_no) {
+        this.when = when;
+        this.image = image;
+        this.kor = kor;
+        this.eng = eng;
+        this.part_no=part_no;
+        this.unit_no=unit_no;
+    }
+
+    public String getPart_no() {
+        return part_no;
+    }
+
+    public void setPart_no(String part_no) {
+        this.part_no = part_no;
+    }
+
+    public String getUnit_no() {
+        return unit_no;
+    }
+
+    public void setUnit_no(String unit_no) {
+        this.unit_no = unit_no;
+    }
+
+    public ConvModel(){
+
+    }
+
 
 
     public String getWhen() {

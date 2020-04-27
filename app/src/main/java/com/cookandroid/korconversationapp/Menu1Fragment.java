@@ -88,7 +88,7 @@ public class Menu1Fragment extends Fragment {
                 for(int j=0;j<jsonArray2.length();j++){
                     JSONObject partialUnitInfoObj=(JSONObject)jsonArray2.get(j);
                     if(Integer.parseInt(partialUnitInfoObj.get("part_no").toString())==(i+1)){
-                        singleItem.add(new ConvModel(partialUnitInfoObj.get("unit_name").toString(), "s1", partialUnitInfoObj.get("main_sentence_kor").toString() ,partialUnitInfoObj.get("main_sentence_eng").toString()));
+                        singleItem.add(new ConvModel(partialUnitInfoObj.get("unit_name").toString(), "s1", partialUnitInfoObj.get("main_sentence_kor").toString() ,partialUnitInfoObj.get("main_sentence_eng").toString(),partialUnitInfoObj.get("part_no").toString(),partialUnitInfoObj.get("unit_no").toString()));
 
                     }
                 }

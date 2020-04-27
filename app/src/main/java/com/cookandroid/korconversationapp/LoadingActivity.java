@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 public class LoadingActivity extends AppCompatActivity {
     ProgressBar progressBar;
-    String str_eng, str_kor;
+    String str_eng, str_kor,part_no,unit_no;
     Handler handler;
     int progress_percent;
 
@@ -25,6 +25,8 @@ public class LoadingActivity extends AppCompatActivity {
         Intent intent=new Intent(this.getIntent());
         str_eng=intent.getStringExtra("eng");
         str_kor=intent.getStringExtra("kor");
+        part_no=intent.getStringExtra("part_no");
+        unit_no=intent.getStringExtra("unit_no");
 
         new Thread() {
             public void run() {
@@ -39,6 +41,8 @@ public class LoadingActivity extends AppCompatActivity {
                                 Intent new_intent = new Intent(LoadingActivity.this, ConvActivity.class);
                                 new_intent.putExtra("kor",str_kor);
                                 new_intent.putExtra("eng",str_eng);
+                                new_intent.putExtra("part_no",part_no);
+                                new_intent.putExtra("unit_no",unit_no);
                                 startActivity(new_intent);
                                 finish();
                                 currentThread().interrupt();
