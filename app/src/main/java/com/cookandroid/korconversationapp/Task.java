@@ -30,7 +30,7 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
     }
     public Task(){}
     public String getString(){return LoadData;}
-    public static String ip = "192.168.219.103"; // 자신의 IP주소를 쓰시면 됩니다.
+    public static String ip = "http://3.23.22.107:8080/AndroidDBConnection/"; // 자신의 IP주소를 쓰시면 됩니다.
     //doInBackground 전에 동작
     @Override
     protected void onPreExecute() {
@@ -43,8 +43,7 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
 
         // Http 요청 준비 작업
         HttpClient.Builder http = new HttpClient.Builder
-                ("POST", "http://25.64.37.150:8080/"+this.getSubUrl()); //포트번호,서블릿주소
-        System.out.println("URL:: "+http.getUrl());
+                ("POST", ip+this.getSubUrl()); //포트번호,서블릿주소
         // Parameter 를 전송한다.
 
         http.addAllParameters(maps[0]);

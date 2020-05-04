@@ -101,12 +101,9 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            System.out.println("로그인 성공 아이디/id토큰/이메일"+user.getUid()+"/"+user.getIdToken(true)+"/"+user.getEmail());
-
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            System.out.println("로그인 실패");
                             updateUI(null);
                         }
                     }

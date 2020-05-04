@@ -96,8 +96,6 @@ public class ConvActivity extends AppCompatActivity {
             scriptInfoKor=TaskforKor.execute(userparams_forKor).get();
             scriptInfoEng=TaskforEng.execute(userparams_forEng).get();
 
-            //kor_script.setText(scriptInfoEng);
-           // kor_script.setText(scriptInfoKor);
         }catch (Exception e){
             e.printStackTrace();
         }

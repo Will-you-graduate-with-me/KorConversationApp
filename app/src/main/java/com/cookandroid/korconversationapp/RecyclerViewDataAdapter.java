@@ -164,7 +164,6 @@ public class RecyclerViewDataAdapter extends RecyclerView.Adapter<RecyclerView.V
                 int random_id=0;
                 int last=Integer.parseInt(todaytime.substring(todaytime.length()-1));
                 random_id=last+1;
-                System.out.println(last+"오늘 날짜 끝자리에 1더한값 "+random_id);
 
                 for(int i=0; i<jsonArray.length(); i++)
                 {

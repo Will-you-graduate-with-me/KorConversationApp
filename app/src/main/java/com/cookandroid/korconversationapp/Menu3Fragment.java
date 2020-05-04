@@ -122,13 +122,11 @@ public class Menu3Fragment extends Fragment {
     }
 
     private void signOut() {
-        System.out.println("로그아웃됨");
         FirebaseAuth.getInstance().signOut();
     }
 
     //회원탈퇴
     private void revokeAccess() {
-        System.out.println("회원탈퇴됨");
         mAuth.getCurrentUser().delete();
     }
 
