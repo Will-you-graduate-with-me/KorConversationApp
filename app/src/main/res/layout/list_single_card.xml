@@ -29,6 +29,7 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:id="@+id/unit_back"
             android:layout_width="wrap_content"
             android:layout_height="180dp"
             android:scaleType="fitXY"
