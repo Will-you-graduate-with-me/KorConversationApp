@@ -40,7 +40,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         final ConvModel singleItem = itemsList.get(i);
-        String base_url="https://bucket-test-sy.s3.us-east-2.amazonaws.com/image/";
+        String base_url="https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_image/";
 
         String img_back_url=base_url+singleItem.getSituation_back()+".png";
 
