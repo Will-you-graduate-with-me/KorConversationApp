@@ -30,11 +30,18 @@ public class AnalysisActivity extends AppCompatActivity {
                 new DividerItemDecoration(this,linearLayoutManager.getOrientation()));
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        Intent i = getIntent();
+        int length = i.getExtras().getInt("length");
+        String[] kor = new String[length];
+
+        for(int j=0; j<length; j++) {
+            kor[j] = i.getExtras().getString("kor_"+j);
+        }
         ArrayList<AnalysisModel> sentence = new ArrayList<>();
-        sentence.add(new AnalysisModel("안녕하세요."));
-        sentence.add(new AnalysisModel("어떻게 지내세요."));
-        sentence.add(new AnalysisModel("저는 잘 지냅니다."));
-        sentence.add(new AnalysisModel("그럼 다음에 만나요."));
+
+        for(int j=0; j<length; j++) {
+            sentence.add(new AnalysisModel(kor[j]));
+        }
 
         // Adapter생성
         recyclerAnalysisAdapter = new RecyclerAnalysisAdapter(this,sentence);
