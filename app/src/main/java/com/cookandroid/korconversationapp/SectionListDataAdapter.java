@@ -6,7 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
+import java.net.URL;
 import java.util.ArrayList;
 
 public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter.SingleItemRowHolder> {
@@ -26,7 +31,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         //final ConvModel singleItem = itemsList.get(i);
         ConvModel singleItem = itemsList.get(i);
-        final String k=singleItem.getKor();
+        //final String k=singleItem.getKor();
 
         return mh;
     }
@@ -35,10 +40,15 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         final ConvModel singleItem = itemsList.get(i);
+        String base_url="https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_image/";
+
+        String img_back_url=base_url+singleItem.getSituation_back()+".png";
 
         holder.when.setText(singleItem.getWhen());
         holder.eng.setText(singleItem.getEng());
         holder.kor.setText(singleItem.getKor());
+        Glide.with(mfragment).load(img_back_url).centerCrop().into(holder.back);
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,6 +73,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         protected TextView when;
         protected TextView kor;
         protected TextView eng;
+        protected ImageView back;
 
 
         public SingleItemRowHolder(View view) {
@@ -71,7 +82,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
             this.when = (TextView) view.findViewById(R.id.when);
             this.kor=(TextView)view.findViewById(R.id.kor);
             this.eng=(TextView)view.findViewById(R.id.eng);
-
+            this.back=(ImageView)view.findViewById(R.id.unit_back);
 
         }
 

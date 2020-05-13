@@ -27,8 +27,8 @@ public class SituationModel {
     public ArrayList<ConvModel> getAllItemsInSection() {
         return allItemsInSection;
     }
-
     public void setAllItemsInSection(ArrayList<ConvModel> allItemsInSection) {
+
         this.allItemsInSection = allItemsInSection;
     }
 }
