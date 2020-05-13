@@ -37,19 +37,19 @@ public class ConvActivity extends AppCompatActivity {
     Button repeat;
     TextView eng, kor, kor_script;
     String str_eng, str_kor, part_no, unit_no;
-    Handler hand;
     TextView part_unit_no;
     int caseCount = 0;
     int caseNumber = -1;
     JSONArray jsonArrayKor;
     String[] scriptK;
     String[] scriptE;
-    int num = 1;
+    int num = 0;
     Intent i;
     SpeechRecognizer mRecognizer;
     int hand_num = 1;
     Thread thread;
     Runnable task;
+    boolean flag = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,8 @@ public class ConvActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //hand.removeCallbacksAndMessages( null );
+                thread.interrupt();
+                flag = false;
                 finish();
             }
         });
@@ -183,7 +184,7 @@ public class ConvActivity extends AppCompatActivity {
                 if(msg.what == 1) {
                     kor.setText(scriptK[num]);
                     eng.setText(scriptE[num]);
-                    if(num%2==0){
+                    if(num%2==1){
 
                         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                         i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
@@ -202,7 +203,7 @@ public class ConvActivity extends AppCompatActivity {
                         kor.append(scriptK[i] + "\n");
                         eng.append(scriptE[i] + "\n");
                     }
-                    if(num%2==0){
+                    if(num%2==1){
 
                         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                         i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
@@ -224,10 +225,10 @@ public class ConvActivity extends AppCompatActivity {
             public void run() {
                 hand_num = 1;
 
-                while(!(thread.isInterrupted())) {
+                while(flag) {
                     if (num <= jsonArrayKor.length() - 1) {
                         if (num != caseNumber) {
-                            if(num % 2 == 0) {
+                            if(num % 2 == 1) {
                                 handler.sendEmptyMessage(1);
                                 try {
                                     Thread.sleep(20000);
@@ -239,7 +240,7 @@ public class ConvActivity extends AppCompatActivity {
                                 handler.sendEmptyMessage(1);
                             }
                         } else {
-                            if(num % 2 == 0) {
+                            if(num % 2 == 1) {
                                 handler.sendEmptyMessage(2);
                                 try {
                                     Thread.sleep(20000);
@@ -257,11 +258,10 @@ public class ConvActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     } else {
+                        thread.interrupt();
                         break;
                     }
-
                 }
-
                 if(num > jsonArrayKor.length()-1) {
                     // 결과 화면 보여주기
                     Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
