@@ -35,14 +35,15 @@ public class ConvActivity extends AppCompatActivity {
 
     ImageButton back, speaker, restart, grade, check;
     Button repeat;
-    TextView eng, kor, kor_script;
+    TextView kor_script;
+    TextView[] textview_kor = new TextView[3];
+    TextView[] textview_eng = new TextView[3];
     String str_eng, str_kor, part_no, unit_no;
     TextView part_unit_no;
-    int caseCount = 0;
-    int caseNumber = -1;
+    int caseCount;
+    int caseNumber;
     JSONArray jsonArrayKor;
-    String[] scriptK;
-    String[] scriptE;
+    String[] scriptK, scriptE;
     int num = 0;
     Intent i;
     SpeechRecognizer mRecognizer;
@@ -73,8 +74,12 @@ public class ConvActivity extends AppCompatActivity {
 //        repeat=(Button)findViewById(R.id.btn_repeat);
 
         part_unit_no = (TextView) findViewById(R.id.part_unit_no);
-        eng = (TextView) findViewById(R.id.eng);
-        kor = (TextView) findViewById(R.id.kor);
+        textview_eng[0] = (TextView) findViewById(R.id.eng);
+        textview_kor[0] = (TextView) findViewById(R.id.kor);
+        textview_eng[1] = (TextView) findViewById(R.id.eng2);
+        textview_kor[1] = (TextView) findViewById(R.id.kor2);
+        textview_eng[2] = (TextView) findViewById(R.id.eng3);
+        textview_kor[2] = (TextView) findViewById(R.id.kor3);
         kor_script = (TextView) findViewById(R.id.kor_script);
         kor_script.setMovementMethod(new ScrollingMovementMethod());
 
@@ -147,31 +152,14 @@ public class ConvActivity extends AppCompatActivity {
             for (int i = 0; i < jsonArrayCase.length(); i++) {
                 JSONObject info_case = (JSONObject) jsonArrayCase.get(i);
                 System.out.print("case정보:" + info_case);
+                caseCount = Integer.parseInt(info_case.get("case_CT").toString());
+                caseNumber = Integer.parseInt(info_case.get("case_SQ").toString());
             }
 
-            kor.setText(scriptK[0]);
-            eng.setText(scriptE[0]);
 
-            // case 개수 알아내기
-            for (int i = 0; i < jsonArrayKor.length(); i++) {
-                JSONObject scriptEng = (JSONObject) jsonArrayKor.get(i);
-                sentence_no1 = scriptEng.get("sentence_no").toString();
-                if (sentence_no1.equals(sentence_no2)) {
-                    sentence_no_final = sentence_no2;
-                    caseNumber = i - 1;
-                    for (int j = 0; j < jsonArrayKor.length(); j++) {
-                        JSONObject scriptEng2 = (JSONObject) jsonArrayKor.get(j);
-                        sentence_no1 = scriptEng2.get("sentence_no").toString();
-                        if (sentence_no1.equals(sentence_no_final))
-                            caseCount++;
-                        else
-                            continue;
-                    }
-                } else {
-                    sentence_no2 = sentence_no1;
-                }
+            textview_kor[0].setText(scriptK[0]);
+            textview_eng[0].setText(scriptE[0]);
 
-            }
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -182,8 +170,13 @@ public class ConvActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg){
                 if(msg.what == 1) {
-                    kor.setText(scriptK[num]);
-                    eng.setText(scriptE[num]);
+                    textview_kor[1].setVisibility(View.GONE);
+                    textview_eng[1].setVisibility(View.GONE);
+                    textview_kor[2].setVisibility(View.GONE);
+                    textview_eng[2].setVisibility(View.GONE);
+
+                    textview_kor[0].setText(scriptK[num]);
+                    textview_eng[0].setText(scriptE[num]);
                     if(num%2==1){
 
                         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -197,11 +190,19 @@ public class ConvActivity extends AppCompatActivity {
                     }
                     num++;
                 } else if(msg.what == 2) {
-                    kor.setText("");
-                    eng.setText("");
+                    if(caseCount == 2) {
+                        textview_kor[1].setVisibility(View.VISIBLE);
+                        textview_eng[1].setVisibility(View.VISIBLE);
+                    } else if (caseCount == 3) {
+                        textview_kor[1].setVisibility(View.VISIBLE);
+                        textview_eng[1].setVisibility(View.VISIBLE);
+                        textview_kor[2].setVisibility(View.VISIBLE);
+                        textview_eng[2].setVisibility(View.VISIBLE);
+                    }
+
                     for (int i = num; i < num + caseCount; i++) {
-                        kor.append(scriptK[i] + "\n");
-                        eng.append(scriptE[i] + "\n");
+                        textview_kor[i-num].setText(scriptK[i]);
+                        textview_eng[i-num].setText(scriptE[i]);
                     }
                     if(num%2==1){
 
@@ -227,7 +228,7 @@ public class ConvActivity extends AppCompatActivity {
 
                 while(flag) {
                     if (num <= jsonArrayKor.length() - 1) {
-                        if (num != caseNumber) {
+                        if (num != caseNumber-1) {
                             if(num % 2 == 1) {
                                 handler.sendEmptyMessage(1);
                                 try {
