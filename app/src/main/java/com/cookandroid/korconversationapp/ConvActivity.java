@@ -33,6 +33,7 @@ import java.util.Map;
 
 public class ConvActivity extends AppCompatActivity {
 
+    CustomExoPlayerView customExoPlayerView;
     ImageButton back, speaker, restart, grade, check;
     Button repeat;
     TextView kor_script;
@@ -51,6 +52,8 @@ public class ConvActivity extends AppCompatActivity {
     Thread thread;
     Runnable task;
     boolean flag = true;
+    String part_unit_no_to_string;
+    final String url_header = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +69,10 @@ public class ConvActivity extends AppCompatActivity {
         getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
 
         setContentView(R.layout.activity_conv);
+
+        // Video Player
+        customExoPlayerView = findViewById(R.id.player_view);
+
         back = (ImageButton) findViewById(R.id.backbtn);
         speaker = (ImageButton) findViewById(R.id.btn_speak);
 //        restart=(ImageButton)findViewById(R.id.btn_restart);
@@ -88,6 +95,27 @@ public class ConvActivity extends AppCompatActivity {
         str_kor = intent.getStringExtra("kor");
         part_no = intent.getStringExtra("part_no");
         unit_no = intent.getStringExtra("unit_no");
+
+        // ex) p1_u4_ : 동영상 url 써먹기 편하라고!
+        part_unit_no_to_string = "p"+part_no+"_"+"u"+unit_no+"_";
+
+        /*
+
+        @@@ Video Player @@@
+
+        // 가장 초기 실행시에는 아래 문장 하나만 실행하면 됨
+        // url 구성은 url_header 변수랑 part_unit_no_to_string 변수 갖고 쓰면 편할듯..
+        customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/p1_u4_a2_1_k.mp4");
+
+
+        // 두 번째 실행부터는
+        1. 기존 플레이어 지우기
+        customExoPlayerView.releasePlayer();
+        // 2. 새로운 인스턴스 다시 만들어서 영상 연결하기
+        customExoPlayerView.initializePlayer("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
+
+
+         */
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -460,4 +488,27 @@ public class ConvActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(customExoPlayerView != null){
+            customExoPlayerView.releasePlayer();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(customExoPlayerView != null){
+            customExoPlayerView.releasePlayer();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(customExoPlayerView != null){
+            customExoPlayerView.releasePlayer();
+        }
+    }
 }
