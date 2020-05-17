@@ -106,6 +106,10 @@ public class ConvActivity extends AppCompatActivity {
         // 가장 처음 문장 (인공지능이 말하는) 실행시에는 아래 문장 하나만 실행하면 됨
         // 비디오 플레이어의 첫 실행이라서 releasePlayer (기존에 존재하는 플레이어 삭제하는거임) 없이 바로 initializeplayer만 하면 됨!
         // url 구성은 url_header 변수랑 part_unit_no_to_string 변수 갖고 쓰면 편할듯..
+        // 지금 S3에는 https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p1_u4_a2_1_k.mp4 밖에 없음..! 참고!!
+        // 테스트 해보고 싶으면 영상 다운받아서 이름 여러개로 바꿔서 올리고 걔네 다 퍼블릭 설정 해두고 테스트하면 되는데.. 아마 영상 잘 나올거임
+        // 귀찮으니까 밑에 BigBuckBunny로 테스트해보삼요!
+
         customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p1_u1_a1_1_k.mp4");
 
 
