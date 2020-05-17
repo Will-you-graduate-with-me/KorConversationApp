@@ -53,7 +53,7 @@ public class ConvActivity extends AppCompatActivity {
     Runnable task;
     boolean flag = true;
     String part_unit_no_to_string;
-    final String url_header = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/";
+    final String url_header = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,19 +96,20 @@ public class ConvActivity extends AppCompatActivity {
         part_no = intent.getStringExtra("part_no");
         unit_no = intent.getStringExtra("unit_no");
 
-        // ex) p1_u4_ : 동영상 url 써먹기 편하라고!
+        // ex) p1_u4_ : 동영상 url 써먹기 편하라고! 나머지 뒤에 인자들은 어디서 갖고 오는 지 모르것네요 허허;;
         part_unit_no_to_string = "p"+part_no+"_"+"u"+unit_no+"_";
 
         /*
 
         @@@ Video Player @@@
 
-        // 가장 초기 실행시에는 아래 문장 하나만 실행하면 됨
+        // 가장 처음 문장 (인공지능이 말하는) 실행시에는 아래 문장 하나만 실행하면 됨
+        // 비디오 플레이어의 첫 실행이라서 releasePlayer (기존에 존재하는 플레이어 삭제하는거임) 없이 바로 initializeplayer만 하면 됨!
         // url 구성은 url_header 변수랑 part_unit_no_to_string 변수 갖고 쓰면 편할듯..
-        customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/p1_u4_a2_1_k.mp4");
+        customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p1_u1_a1_1_k.mp4");
 
 
-        // 두 번째 실행부터는
+        // 사용자가 말하고 나서 다시 인공지능이 받아치는 두 번째 실행부터는 이미 플레이어를 사용하고 난 뒤라서 꼭 지워주고 다시 만들어야함!
         1. 기존 플레이어 지우기
         customExoPlayerView.releasePlayer();
         // 2. 새로운 인스턴스 다시 만들어서 영상 연결하기
