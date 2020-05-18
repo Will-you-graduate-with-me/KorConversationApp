@@ -29,6 +29,8 @@
         <activity android:name=".LoadingActivity"/>
         <activity android:name=".NameChangeActivity"/>
         <activity android:name=".CharChangeActivity"/>
+        <activity android:name=".DialogActivity"
+            android:theme="@style/dialogTheme" android:screenOrientation="portrait"></activity>
 
     </application>
 

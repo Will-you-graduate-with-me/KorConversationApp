@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,17 +36,30 @@ public class RecyclerAnalysisAdapter extends RecyclerView.Adapter<RecyclerAnalys
 
     class ViewHolder extends RecyclerView.ViewHolder {
         CheckBox analysis_check;
+        TextView tv_scrap;
 
         public ViewHolder(View itemView) {
             super(itemView);
             analysis_check = (CheckBox) itemView.findViewById(R.id.analysis_check);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            tv_scrap = (TextView) itemView.findViewById(R.id.tv_scrap);
+            /*itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(activity, "click " +
                             sentence.get(getAdapterPosition()).getKor(), Toast.LENGTH_SHORT).show();
                 }
+            });*/
+            analysis_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (analysis_check.isChecked()) {
+                        System.out.println(sentence.get(getAdapterPosition()).getKor());
+                    } else {
+                        System.out.println("체크취소");
+                    }
+                }
             });
+
         }
     }
 
@@ -56,11 +71,11 @@ public class RecyclerAnalysisAdapter extends RecyclerView.Adapter<RecyclerAnalys
 
     // 재활용 되는 View가 호출, Adapter가 해당 position에 해당하는 데이터를 결합
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         AnalysisModel data = sentence.get(position);
 
         // 데이터 결합
-        holder.analysis_check.setText(data.getKor());
+        holder.tv_scrap.setText(data.getKor());
     }
 
 
