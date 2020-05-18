@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 signIn();
+
             }
         });
          //로그인 기록 있으면 건너뛰기

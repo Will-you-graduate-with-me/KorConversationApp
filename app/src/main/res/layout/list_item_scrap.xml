@@ -6,17 +6,33 @@
     android:padding="10dp"
     android:background="#e1e1e1">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="한국어 문장"
-        android:textSize="25sp"
-        android:id="@+id/sentence_kor" />
+        android:orientation="horizontal"
+        android:id="@+id/layout">
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:text="한국어 문장"
+            android:textSize="25sp"
+            android:layout_weight="2"
+            android:layout_gravity="center"
+            android:id="@+id/sentence_kor" />
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/cancel"
+            android:gravity="center"
+            android:id="@+id/btn_cancel" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sentence_kor">
+        android:layout_below="@+id/layout">
 
         <TextView
             android:id="@+id/sentence_eng"
@@ -28,18 +44,11 @@
             android:layout_gravity="center" />
 
         <Button
-            android:id="@+id/btn_listen"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_weight="1"
-            android:text="듣" />
-
-        <Button
             android:id="@+id/btn_play"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_weight="1"
-            android:text="재" />
+            android:text="시작" />
 
 
     </LinearLayout>
