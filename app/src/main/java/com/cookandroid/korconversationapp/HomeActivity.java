@@ -14,6 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ public class HomeActivity extends AppCompatActivity {
     private Menu1Fragment menu1Fragment = new Menu1Fragment();
     private Menu2Fragment menu2Fragment = new Menu2Fragment();
     private Menu3Fragment menu3Fragment = new Menu3Fragment();
+    private FirebaseAuth mAuth ;
 
     String user_id,nickname;
     int character_id,stay_duration,age;
@@ -49,17 +52,37 @@ public class HomeActivity extends AppCompatActivity {
         character_id=preIntent.getIntExtra("character_id",999);
         age=preIntent.getIntExtra("age",999);
 
+        String userInfo = "";
+        mAuth = FirebaseAuth.getInstance();
 
-        //insert
-        Map<String, String> userparams = new HashMap<String, String>();
-        userparams.put("user_id",user_id);
-        userparams.put("nickname",nickname);
-        userparams.put("stay_duration",Integer.toString(stay_duration));
-        userparams.put("character_id",Integer.toString(character_id));
-        userparams.put("age",Integer.toString(age));
-        Task insertTask=new Task("insertUserID",userparams);
-        insertTask.execute(userparams);
+        // 유저 아이디 확인
+        try {
+            Map<String, String> params_userid = new HashMap<String, String>();
+            params_userid.put("user_id", mAuth.getUid());
 
+            com.cookandroid.korconversationapp.Task TaskforUser = new com.cookandroid.korconversationapp.Task("whetherUserInfo", params_userid);
+
+            userInfo = TaskforUser.execute(params_userid).get();
+            System.out.println("유저반환값 : " + userInfo);
+
+            if(userInfo.equals("0")) {
+                //insert
+                //만약 작동 안한다면 try-catch 없애고 밑에 주석표시한 부분만 밖으로 빼내기
+                Map<String, String> userparams = new HashMap<String, String>();
+                userparams.put("user_id",user_id);
+                System.out.println("유저아이디 :" + user_id);
+                userparams.put("nickname",nickname);
+                userparams.put("stay_duration",Integer.toString(stay_duration));
+                userparams.put("character_id",Integer.toString(character_id));
+                userparams.put("age",Integer.toString(age));
+                Task insertTask=new Task("insertUserID",userparams);
+                insertTask.execute(userparams);
+                ///
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation_view);
         // 첫 화면 지정

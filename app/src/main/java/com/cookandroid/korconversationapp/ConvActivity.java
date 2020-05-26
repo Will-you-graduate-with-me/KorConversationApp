@@ -41,14 +41,13 @@ public class ConvActivity extends AppCompatActivity {
     TextView[] textview_eng = new TextView[3];
     String str_eng, str_kor, part_no, unit_no;
     TextView part_unit_no;
-    int caseCount;
-    int caseNumber;
+    int caseCount, caseNumber, num=0, rightCount;
     JSONArray jsonArrayKor;
-    String[] scriptK, scriptE;
-    int num = 0;
+    String[] scriptK, scriptE, script_id_kor, script_id_eng;
     Intent i;
     SpeechRecognizer mRecognizer;
-    int hand_num = 1;
+    int[] wrong = new int[20];
+    int wrong_num;
     Thread thread;
     Runnable task;
     boolean flag = true;
@@ -71,7 +70,7 @@ public class ConvActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conv);
 
         // Video Player
-        customExoPlayerView = findViewById(R.id.player_view);
+        //customExoPlayerView = findViewById(R.id.player_view);
 
         back = (ImageButton) findViewById(R.id.backbtn);
         speaker = (ImageButton) findViewById(R.id.btn_speak);
@@ -163,23 +162,25 @@ public class ConvActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         try {
-            String sentence_no1 = "";
-            String sentence_no2 = "";
-            String sentence_no_final = "";
+
             jsonArrayKor = new JSONArray(scriptInfoKor);
             JSONArray jsonArrayEng = new JSONArray(scriptInfoEng);
             JSONArray jsonArrayCase = new JSONArray(caseInfo);
             scriptK = new String[jsonArrayKor.length()];
             scriptE = new String[jsonArrayEng.length()];
+            script_id_kor = new String[jsonArrayKor.length()];
+            script_id_eng = new String[jsonArrayEng.length()];
 
             for (int i = 0; i < jsonArrayKor.length(); i++) {
                 JSONObject scriptKor = (JSONObject) jsonArrayKor.get(i);
                 scriptK[i] = scriptKor.get("sentence").toString();
+                script_id_kor[i] = scriptKor.get("script_id").toString();
             }
 
             for (int i = 0; i < jsonArrayEng.length(); i++) {
                 JSONObject scriptEng = (JSONObject) jsonArrayEng.get(i);
                 scriptE[i] = scriptEng.get("sentence").toString();
+                script_id_eng[i] = scriptEng.get("script_id").toString();
             }
 
             for (int i = 0; i < jsonArrayCase.length(); i++) {
@@ -202,6 +203,7 @@ public class ConvActivity extends AppCompatActivity {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg){
+
                 if(msg.what == 1) {
                     textview_kor[1].setVisibility(View.GONE);
                     textview_eng[1].setVisibility(View.GONE);
@@ -257,9 +259,11 @@ public class ConvActivity extends AppCompatActivity {
         task = new Runnable() {
             @Override
             public void run() {
-                hand_num = 1;
 
                 while(flag) {
+                    wrong_num=0;
+                    rightCount=0;
+
                     if (num <= jsonArrayKor.length() - 1) {
                         if (num != caseNumber-1) {
                             if(num % 2 == 1) {
@@ -302,6 +306,10 @@ public class ConvActivity extends AppCompatActivity {
                     i.putExtra("length", jsonArrayKor.length());
                     for (int j = 0; j < jsonArrayKor.length(); j++) {
                         i.putExtra("kor_" + j, scriptK[j]);
+                        i.putExtra("scriptidkor_"+j, script_id_kor[j]);
+                        i.putExtra("scriptideng_"+j, script_id_eng[j]);
+                        i.putExtra("part_no", part_no);
+                        i.putExtra("unit_no", unit_no);
                     }
                     startActivity(i);
                     finish();
@@ -386,12 +394,52 @@ public class ConvActivity extends AppCompatActivity {
             // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어줍니다.
             ArrayList<String> matches =
                     results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            String recText_org = "";
-            recText_org = matches.get(0); //인식된 음성정보
+            String recText_org = matches.get(0); //인식된 음성정보
+            String recText = recText_org.replace(" ", ""); //인식된 음성정보 공백제거
+
+            String lyrics_org = textview_kor[0].getText().toString(); //가사 정보
+            String lyrics = lyrics_org.replace(" ", ""); //가사정보 공백제거
+            lyrics = lyrics.replace(".", ""); //가사정보 온점제거
+            lyrics = lyrics.replace("!",""); //가사정보 느낌표제거
+
+            SpannableStringBuilder sb = new SpannableStringBuilder(recText_org);
+
+            // 음성이 인식되면 넘어가기
             if (recText_org!="") {
-                kor_script.setText(recText_org);
+                int length = (recText.length() > lyrics.length()) ? recText.length() : lyrics.length();
+                for (int i = 0; i < length; i++) {
+                    try {
+                        if ((recText.charAt(i)) == (lyrics.charAt(i))) {  //음성정보와 가사와 비교
+                            rightCount++; // 맞은 개수 체크
+                        } else {
+                            wrong[wrong_num] = i; // 틀린 부분 저장
+                            wrong_num++;
+                        }
+                    } catch (Exception e) {
+                        wrong[wrong_num] = i; // 틀린 부분 저장
+                        wrong_num++;
+                    }
+                }
+
+                for (int j = 0; j < wrong_num; j++) {
+                    for (int i = 0; i < recText_org.length(); i++) {
+                        try {
+                            if ((recText_org.charAt(i)) == (recText.charAt(wrong[j]))) { // 기존 예시에서 틀린 부분 찾기
+                                // 틀린 부분 색깔 바꾸기
+                                ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#FFFA5252"));
+                                sb.setSpan(span, i, i + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            }
+                        } catch (Exception e) {
+                            break;
+                        }
+                    }
+
+                }
+
+                kor_script.setText(sb);
+
                 Handler mHandler = new Handler();
-                mHandler.postDelayed(new Runnable()  {
+                mHandler.postDelayed(new Runnable() {
                     public void run() {
                         // 시간 지난 후 실행할 코딩
                         thread.interrupt();
@@ -399,87 +447,6 @@ public class ConvActivity extends AppCompatActivity {
                     }
                 }, 2000); // 0.5초후
             }
-
-            /*
-            recText = recText_org.replace(" ", ""); //인식된 음성정보 공백제거
-
-            // 배열로 선언
-            String[] lyrics_org = new String[count];
-            String[] lyrics = new String[count];
-            int[] rightCount = new int[count];
-            int max = 0;
-            int max_num = 0;
-
-            SpannableStringBuilder sb = new SpannableStringBuilder(recText_org);
-
-            // 문장 개수 따라 검사
-            for(int i=0; i< count; i++) {
-                rightCount[i] = 0;
-
-                lyrics_org[i] = kor[i]; //가사 정보
-                lyrics[i] = lyrics_org[i].replace(" ", ""); //가사정보 공백제거
-                lyrics[i] = lyrics[i].replace(".", ""); //가사정보 온점제거
-                lyrics[i] = lyrics[i].replace("!", ""); //가사정보 느낌표제거
-
-                int length = (recText.length() > lyrics[i].length()) ? recText.length() : lyrics[i].length();
-                for (int j = 0; j < length; j++) {
-                    try {
-                        if ((recText.charAt(j)) == (lyrics[i].charAt(j))) {  //음성정보와 가사와 비교
-                            rightCount[i]++; // 맞은 개수 체크
-                        } else {
-                            continue;
-                        }
-                    } catch (Exception e) {
-                        continue;
-
-                    }
-                }
-
-                // 맞은 개수가 가장 많은 문장 찾기
-                if(rightCount[i] > max) {
-                    max = rightCount[i];
-                    // 그 문장의 번호를 저장
-                    max_num = i;
-                }
-
-            }
-
-            // 해당 문장과 발음한 문장 비교
-            int length = (recText.length()>lyrics[max_num].length())?recText.length():lyrics[max_num].length();
-            for (int j = 0; j < length; j++) {
-                try {
-                    if ((recText.charAt(j)) == (lyrics[max_num].charAt(j))) {  //음성정보와 가사와 비교
-                        continue;
-                    } else {
-                        wrong[wrong_num] = j; // 틀린 부분 저장
-                        wrong_num++;
-                    }
-                } catch (Exception e) {
-                    wrong[wrong_num] = j; // 틀린 부분 저장
-                    wrong_num++;
-                }
-            }
-
-            for(int j=0; j<wrong_num; j++) {
-                for(int k=0; k<recText_org.length(); k++) {
-                    try {
-                        if((recText_org.charAt(k)) == (recText.charAt(wrong[j]))) { // 기존 예시에서 틀린 부분 찾기
-                            // 틀린 부분 색깔 바꾸기
-                            ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#FFFA5252"));
-                            sb.setSpan(span, k, k+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        }
-                    } catch (Exception e) {
-                        break;
-                    }
-                }
-
-            }
-
-            // 해당되는 문장 색 바꾸기
-            textview_kor[max_num].setTextColor(Color.parseColor("#FF52B4FA"));
-            textview_eng[max_num].setTextColor(Color.parseColor("#FF52B4FA"));
-            tv_wrong.setText(sb);
-            */
 
         }
 
@@ -492,7 +459,7 @@ public class ConvActivity extends AppCompatActivity {
 
         }
     };
-
+/*
     @Override
     protected void onPause() {
         super.onPause();
@@ -516,4 +483,5 @@ public class ConvActivity extends AppCompatActivity {
             customExoPlayerView.releasePlayer();
         }
     }
+    */
 }
