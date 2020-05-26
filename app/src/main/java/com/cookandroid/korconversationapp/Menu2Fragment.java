@@ -33,6 +33,7 @@ public class Menu2Fragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         BottomNavigationView navigation =  getActivity().findViewById(R.id.top_navigation_view);
+
         fragmentManager = getChildFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.drive_layout, drive1Fragment).commitAllowingStateLoss();

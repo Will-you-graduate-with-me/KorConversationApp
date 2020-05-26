@@ -23,6 +23,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
 
     Button btn_login;
@@ -43,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,12 +60,16 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
          //로그인 기록 있으면 건너뛰기
         if (mAuth.getCurrentUser() != null) {
             Intent intent = new Intent(getApplication(), HomeActivity.class);
             startActivity(intent);
             finish();
         }
+
+
         btn_login=(Button)findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
@@ -102,7 +117,33 @@ public class MainActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+
+                            String userInfo = "";
+
+                            // 유저 아이디 확인
+                            try {
+
+                                Map<String, String> params_userid = new HashMap<String, String>();
+                                params_userid.put("user_id", mAuth.getUid());
+                                System.out.println("유저아이디 : " + mAuth.getUid());
+
+                                com.cookandroid.korconversationapp.Task TaskforUser = new com.cookandroid.korconversationapp.Task("whetherUserInfo", params_userid);
+
+                                userInfo = TaskforUser.execute(params_userid).get();
+                                System.out.println("유저반환값 : " + userInfo);
+
+                                if(userInfo.equals("0"))
+                                    updateUI(user);
+                                else {
+                                    // 회원이면 넘어가기
+                                    Intent intent = new Intent(getApplication(), HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         } else {
                             // If sign in fails, display a message to the user.
                             updateUI(null);
@@ -115,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         if (user != null) {
             Intent intent = new Intent(this, NameActivity.class);
             intent.putExtra("user_id",user.getUid());
+            System.out.println("아이디 : " + mAuth.getUid());
             startActivity(intent);
             finish();
         }

@@ -11,13 +11,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class drive2Fragment extends Fragment {
 
     RecyclerView recyclerView_scrap;
     LinearLayoutManager linearLayoutManager;
     RecyclerScrapAdapter recyclerScrapAdapter;
+    private FirebaseAuth mAuth ;
 
     @Nullable
     @Override
@@ -33,6 +42,56 @@ public class drive2Fragment extends Fragment {
         ScrapDecoration spaceDecoration = new ScrapDecoration(90);
         recyclerView_scrap.addItemDecoration(spaceDecoration);
 
+        String scrappedInfo = "";
+        String RecommendInfo = "";
+        String sentenceInfo = "";
+
+        mAuth = FirebaseAuth.getInstance();
+
+        try {
+
+            Map<String, String> params_scrapped = new HashMap<String, String>();
+            params_scrapped.put("user_id", mAuth.getUid());
+            System.out.println("유저아이디 : " + mAuth.getUid());
+
+            Task TaskforScrap = new Task("selectUserScrappedScript", params_scrapped);
+            Task TaskforRecommend = new Task("selectUserRecommend", params_scrapped);
+            Task TaskforSentence = new Task("selectUserScrappedScriptSentence", params_scrapped);
+
+
+            /*
+            scrappedInfo = TaskforScrap.execute(params_scrapped).get();
+            System.out.println("스크랩정보 : " + scrappedInfo);
+
+            RecommendInfo = TaskforRecommend.execute(params_scrapped).get();
+            System.out.println("추천정보 : " + RecommendInfo);
+            */
+
+            sentenceInfo = TaskforSentence.execute(params_scrapped).get();
+            System.out.println("문장정보 : " + sentenceInfo);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        try {
+
+            JSONArray jsonArrayScrap = new JSONArray(sentenceInfo);
+
+            String[] scrap;
+            scrap = new String[jsonArrayScrap.length()];
+
+            for (int i = 0; i < jsonArrayScrap.length(); i++) {
+                JSONObject scrapped = (JSONObject) jsonArrayScrap.get(i);
+                System.out.println("받아온 정보 : " + scrapped);
+
+                scrap[i] = scrapped.get("sentence").toString();
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         // ArrayList에 person 객체(이름과 번호) 넣기
         ArrayList<ScrapModel> scrap = new ArrayList<>();

@@ -46,7 +46,6 @@ public class Menu1Fragment extends Fragment {
 
         return v;
 
-
     }
 
     //part 별 데이터, unit 별 데이터
@@ -62,6 +61,8 @@ public class Menu1Fragment extends Fragment {
             Map<String, String> params = new HashMap<String, String>();
             partInfo=networkTask.execute(params).get();
             partialUnitInfo=networkTask2.execute(params).get();
+            System.out.println("partInfo : " + partInfo);
+            System.out.println("partialUnitInfo : " + partialUnitInfo);
 
 //            //insert
 //            Map<String, String> userparams = new HashMap<String, String>();

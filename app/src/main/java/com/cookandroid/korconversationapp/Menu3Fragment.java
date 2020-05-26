@@ -75,14 +75,14 @@ public class Menu3Fragment extends Fragment {
                 startActivity(intent);
             }
         });
-//        signout.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                revokeAccess();
-//                Intent intent = new Intent(getActivity(), MainActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        signout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                revokeAccess();
+                Intent intent = new Intent(getActivity(), MainActivity.class);
+                startActivity(intent);
+            }
+        });
         nameChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

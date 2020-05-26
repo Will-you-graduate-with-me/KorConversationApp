@@ -1,6 +1,7 @@
 package com.cookandroid.korconversationapp;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ public class RecyclerAnalysisAdapter extends RecyclerView.Adapter<RecyclerAnalys
     private ArrayList<AnalysisModel> sentence;
     private Activity activity;
     private AnalysisActivity ac;
+
 
     public RecyclerAnalysisAdapter(Activity activity, ArrayList<AnalysisModel> sentence) {
         this.sentence = sentence;
@@ -49,13 +51,29 @@ public class RecyclerAnalysisAdapter extends RecyclerView.Adapter<RecyclerAnalys
                             sentence.get(getAdapterPosition()).getKor(), Toast.LENGTH_SHORT).show();
                 }
             });*/
+
             analysis_check.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (analysis_check.isChecked()) {
-                        System.out.println(sentence.get(getAdapterPosition()).getKor());
+                        System.out.println(sentence.get(getAdapterPosition()).getScript_id_kor());
+                        System.out.println(sentence.get(getAdapterPosition()).getScript_id_eng());
+                        ((AnalysisActivity)AnalysisActivity.Acontext).scriptArray.add(sentence.get(getAdapterPosition()).getScript_id_kor());
+                        ((AnalysisActivity)AnalysisActivity.Acontext).scriptArray.add(sentence.get(getAdapterPosition()).getScript_id_eng());
                     } else {
-                        System.out.println("체크취소");
+                        for(int i=0; i<((AnalysisActivity)AnalysisActivity.Acontext).scriptArray.size(); i++) {
+                            if(((AnalysisActivity)AnalysisActivity.Acontext).scriptArray.get(i).equals(sentence.get(getAdapterPosition()).getScript_id_kor())) {
+                                // 한국어 삭제
+                                System.out.println("체크취소 : " + ((AnalysisActivity)AnalysisActivity.Acontext).scriptArray.get(i));
+                                ((AnalysisActivity) AnalysisActivity.Acontext).scriptArray.remove(i);
+                                // 영어 삭제
+                                System.out.println("체크취소 : " + ((AnalysisActivity)AnalysisActivity.Acontext).scriptArray.get(i));
+                                ((AnalysisActivity) AnalysisActivity.Acontext).scriptArray.remove(i);
+
+                            }
+                            else
+                                continue;
+                        }
                     }
                 }
             });
