@@ -43,10 +43,9 @@ public class ConvActivity extends AppCompatActivity {
     TextView part_unit_no;
     int caseCount, caseNumber, num=0, rightCount;
     JSONArray jsonArrayKor;
-    String[] scriptK, scriptE, script_id_kor, script_id_eng;
+    String[] scriptK, scriptE, script_id_kor, script_id_eng, sentence_no;
     Intent i;
     SpeechRecognizer mRecognizer;
-    int[] wrong = new int[20];
     int wrong_num;
     Thread thread;
     Runnable task;
@@ -126,6 +125,8 @@ public class ConvActivity extends AppCompatActivity {
             public void onClick(View view) {
                 thread.interrupt();
                 flag = false;
+                mRecognizer.destroy();
+                mRecognizer.cancel();
                 finish();
             }
         });
@@ -170,11 +171,13 @@ public class ConvActivity extends AppCompatActivity {
             scriptE = new String[jsonArrayEng.length()];
             script_id_kor = new String[jsonArrayKor.length()];
             script_id_eng = new String[jsonArrayEng.length()];
+            sentence_no = new String[jsonArrayKor.length()];
 
             for (int i = 0; i < jsonArrayKor.length(); i++) {
                 JSONObject scriptKor = (JSONObject) jsonArrayKor.get(i);
                 scriptK[i] = scriptKor.get("sentence").toString();
                 script_id_kor[i] = scriptKor.get("script_id").toString();
+                sentence_no[i] = String.valueOf(scriptKor.get("sentence_no").toString().charAt(0));
             }
 
             for (int i = 0; i < jsonArrayEng.length(); i++) {
@@ -203,8 +206,10 @@ public class ConvActivity extends AppCompatActivity {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg){
-
+                // 메세지 1번 실행
                 if(msg.what == 1) {
+                    // 메세지 1번은 케이스가 나뉘지 않는 문장들임
+                    // 텍스트뷰 (케이스가 여러개일 때 각각 보여주는 공간) 숨기기
                     textview_kor[1].setVisibility(View.GONE);
                     textview_eng[1].setVisibility(View.GONE);
                     textview_kor[2].setVisibility(View.GONE);
@@ -212,8 +217,10 @@ public class ConvActivity extends AppCompatActivity {
 
                     textview_kor[0].setText(scriptK[num]);
                     textview_eng[0].setText(scriptE[num]);
-                    if(num%2==1){
+                    // 사용자가 말할 차례라면
+                    if(sentence_no[num].equals("b")){
 
+                        // 음성인식 시작 코드들
                         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                         i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
                         i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
@@ -224,22 +231,27 @@ public class ConvActivity extends AppCompatActivity {
 
                     }
                     num++;
-                } else if(msg.what == 2) {
-                    if(caseCount == 2) {
+                } else if(msg.what == 2) { // 메세지 2번 실행
+                    // 메세지 2번은 케이스가 나뉘는 문장들임
+                    if(caseCount == 2) { // 케이스가 2개라면
+                        // 추가로 텍스트뷰 하나만 더 보여줌
                         textview_kor[1].setVisibility(View.VISIBLE);
                         textview_eng[1].setVisibility(View.VISIBLE);
-                    } else if (caseCount == 3) {
+                    } else if (caseCount == 3) { // 케이스가 3개라면
+                        // 추가로 텍스트뷰 두개를 더 보여줌
                         textview_kor[1].setVisibility(View.VISIBLE);
                         textview_eng[1].setVisibility(View.VISIBLE);
                         textview_kor[2].setVisibility(View.VISIBLE);
                         textview_eng[2].setVisibility(View.VISIBLE);
                     }
 
+                    // 케이스 개수대로 텍스트뷰에 나타내는 것
                     for (int i = num; i < num + caseCount; i++) {
                         textview_kor[i-num].setText(scriptK[i]);
                         textview_eng[i-num].setText(scriptE[i]);
                     }
-                    if(num%2==1){
+                    // 사용자라면 음성인식 시작
+                    if(sentence_no[num].equals("b")){
 
                         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                         i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
@@ -250,48 +262,67 @@ public class ConvActivity extends AppCompatActivity {
                         mRecognizer.startListening(i);
 
                     }
+                    // 케이스개수만큼 뛰어넘기위해 num+caseCount를 해줌
                     num = num + caseCount;
                 }
             }
 
         };
 
+        // 학습할 때 사용하는 task
         task = new Runnable() {
             @Override
             public void run() {
 
+                // flag 설정으로 task 실행을 조절함
+                // 기본은 true이고 뒤로가기 버튼을 눌렀을 때 flag가 false가 되면서 멈춤
                 while(flag) {
+                    // 음성인식용 변수, 신경쓰지 않아도 됨
                     wrong_num=0;
                     rightCount=0;
 
+                    // 배열의 크기를 벗어나지 않을 때 실행
                     if (num <= jsonArrayKor.length() - 1) {
+                        // 케이스가 발생하는(갈라지는) 번호가 아닐 때
                         if (num != caseNumber-1) {
-                            if(num % 2 == 1) {
+                            // b라면 (사용자라면)
+                            if(sentence_no[num].equals("b")) {
+                                // 1번 메세지를 넘겨줌 => 위에서 msg.what==1을 실행
                                 handler.sendEmptyMessage(1);
                                 try {
-                                    Thread.sleep(20000);
+                                    // 10초동안 스레드 재우기
+                                    // 사용자가 말하지 않아도 10초 후엔 강제로 넘어갈 수 있도록 해줌
+                                    Thread.sleep(10000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
 
                             } else{
+                                // 바로 실행 (스레드를 재우게되면 딜레이가 생기기때문에 여기서는 재우지않고 넘어감)
                                 handler.sendEmptyMessage(1);
                             }
-                        } else {
-                            if(num % 2 == 1) {
+                        } else { // 케이스가 발생하는 번호일 때
+                            // b라면 (사용자라면)
+                            if(sentence_no[num].equals("b")) {
+                                // 2번 메세지를 넘겨줌 => 위에서 msg.what==2를 실행
                                 handler.sendEmptyMessage(2);
                                 try {
-                                    Thread.sleep(20000);
+                                    Thread.sleep(10000); // 원래 20000
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
 
                             } else{
+                                // 바로 실행
                                 handler.sendEmptyMessage(2);
                             }
                         }
                         try {
-                            Thread.sleep(2000);
+                            // 여기서의 딜레이가 a가 말할 때 생기는 시간임
+                            // 지금은 2초뒤에 자동으로 다음단계로 넘어가도록 설정해뒀음
+                            if(sentence_no[num].equals("a")) {
+                                Thread.sleep(2000);
+                            }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -300,6 +331,7 @@ public class ConvActivity extends AppCompatActivity {
                         break;
                     }
                 }
+                // 배열이 끝나면 더 학습할 스크립트가 남아있지 않으므로 결과창으로 넘어감
                 if(num > jsonArrayKor.length()-1) {
                     // 결과 화면 보여주기
                     Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
@@ -317,6 +349,7 @@ public class ConvActivity extends AppCompatActivity {
             }
         };
 
+        // 위의 task를 시작해주는 코드
         thread = new Thread(task);
         thread.start();
 
@@ -386,7 +419,7 @@ public class ConvActivity extends AppCompatActivity {
                     break;
             }
 
-            Toast.makeText(getApplicationContext(), "에러가 발생하였습니다. : " + message, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -406,7 +439,10 @@ public class ConvActivity extends AppCompatActivity {
 
             // 음성이 인식되면 넘어가기
             if (recText_org!="") {
+                /* 틀린거 찾고 색깔 바꿔주는 부분 (오류 뜰까봐 주석처리)
                 int length = (recText.length() > lyrics.length()) ? recText.length() : lyrics.length();
+                int[] wrong = new int[20];
+
                 for (int i = 0; i < length; i++) {
                     try {
                         if ((recText.charAt(i)) == (lyrics.charAt(i))) {  //음성정보와 가사와 비교
@@ -435,6 +471,7 @@ public class ConvActivity extends AppCompatActivity {
                     }
 
                 }
+                */
 
                 kor_script.setText(sb);
 
@@ -445,7 +482,7 @@ public class ConvActivity extends AppCompatActivity {
                         thread.interrupt();
                         kor_script.setText("");
                     }
-                }, 2000); // 0.5초후
+                }, 2000);
             }
 
         }

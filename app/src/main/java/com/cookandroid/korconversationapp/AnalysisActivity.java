@@ -85,23 +85,23 @@ public class AnalysisActivity extends AppCompatActivity {
 
                 try {
                     Map<String, String> historyparams = new HashMap<String, String>();
+                    Map<String, String> historyparams2 = new HashMap<String, String>();
 
-                    historyparams.put("user_id", "123");
-                    historyparams.put("part_no", "1");
-                    historyparams.put("unit_no", "3");
-                    historyparams.put("grade", "a");
-
-                    /*
                     historyparams.put("user_id", mAuth.getUid());
                     historyparams.put("part_no", part_no);
                     historyparams.put("unit_no", unit_no);
-                    historyparams.put("grade", "A");
-                    */
-                    System.out.println(part_no + "/" + unit_no);
+                    historyparams.put("grade", "B");
 
-                    Task Taskforhistory = new Task("whetherHistoryInfo", historyparams);
+                    historyparams2.put("user_id", mAuth.getUid());
+                    historyparams2.put("part_no", part_no);
+                    historyparams2.put("unit_no", unit_no);
+
+                    System.out.println(mAuth.getUid()+"/"+ part_no + "/" + unit_no);
+                    Task Taskforhistory = new Task("insertHistoryByCase", historyparams);
+                    Task Taskforhistory2 = new Task("updateRecentID", historyparams2);
 
                     historyInfo = Taskforhistory.execute(historyparams).get();
+                    Taskforhistory2.execute(historyparams2).get();
                     System.out.println("historyInfo : " + historyInfo);
 
                 } catch (Exception e) {

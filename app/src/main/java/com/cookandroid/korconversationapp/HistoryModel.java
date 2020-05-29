@@ -1,12 +1,34 @@
 package com.cookandroid.korconversationapp;
 
 public class HistoryModel {
+    String part_name;
+    String unit_name;
     String category;
     String situation;
+    String situation_back;
 
-    public HistoryModel(String category, String situation) {
+    public HistoryModel(String part_name, String unit_name, String category, String situation, String situation_back) {
+        this.part_name = part_name;
+        this.unit_name = unit_name;
         this.category = category;
         this.situation = situation;
+        this.situation_back = situation_back;
+    }
+
+    public String getPart_name() {
+        return part_name;
+    }
+
+    public void setPart_name(String part_name) {
+        this.part_name = part_name;
+    }
+
+    public String getUnit_name() {
+        return unit_name;
+    }
+
+    public void setUnit_name(String unit_name) {
+        this.unit_name = unit_name;
     }
 
     public String getCategory() {
@@ -23,5 +45,13 @@ public class HistoryModel {
 
     public void setSituation(String situation) {
         this.situation = situation;
+    }
+
+    public String getSituation_back() {
+        return situation_back;
+    }
+
+    public void setSituation_back(String situation_back) {
+        this.situation_back = situation_back;
     }
 }

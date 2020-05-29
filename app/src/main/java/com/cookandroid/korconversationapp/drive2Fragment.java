@@ -1,5 +1,6 @@
 package com.cookandroid.korconversationapp;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ public class drive2Fragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     RecyclerScrapAdapter recyclerScrapAdapter;
     private FirebaseAuth mAuth ;
+    String[] scrap, scrap_id;
 
     @Nullable
     @Override
@@ -42,8 +44,6 @@ public class drive2Fragment extends Fragment {
         ScrapDecoration spaceDecoration = new ScrapDecoration(90);
         recyclerView_scrap.addItemDecoration(spaceDecoration);
 
-        String scrappedInfo = "";
-        String RecommendInfo = "";
         String sentenceInfo = "";
 
         mAuth = FirebaseAuth.getInstance();
@@ -54,38 +54,28 @@ public class drive2Fragment extends Fragment {
             params_scrapped.put("user_id", mAuth.getUid());
             System.out.println("유저아이디 : " + mAuth.getUid());
 
-            Task TaskforScrap = new Task("selectUserScrappedScript", params_scrapped);
-            Task TaskforRecommend = new Task("selectUserRecommend", params_scrapped);
-            Task TaskforSentence = new Task("selectUserScrappedScriptSentence", params_scrapped);
+            Task TaskforScrap = new Task("selectUserScrappedScriptInfo", params_scrapped);
 
-
-            /*
-            scrappedInfo = TaskforScrap.execute(params_scrapped).get();
-            System.out.println("스크랩정보 : " + scrappedInfo);
-
-            RecommendInfo = TaskforRecommend.execute(params_scrapped).get();
-            System.out.println("추천정보 : " + RecommendInfo);
-            */
-
-            sentenceInfo = TaskforSentence.execute(params_scrapped).get();
+            sentenceInfo = TaskforScrap.execute(params_scrapped).get();
             System.out.println("문장정보 : " + sentenceInfo);
-
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         try {
 
             JSONArray jsonArrayScrap = new JSONArray(sentenceInfo);
 
-            String[] scrap;
             scrap = new String[jsonArrayScrap.length()];
+            scrap_id = new String[jsonArrayScrap.length()];
 
             for (int i = 0; i < jsonArrayScrap.length(); i++) {
                 JSONObject scrapped = (JSONObject) jsonArrayScrap.get(i);
                 System.out.println("받아온 정보 : " + scrapped);
 
                 scrap[i] = scrapped.get("sentence").toString();
+                scrap_id[i] = scrapped.get("script_id").toString();
 
             }
 
@@ -94,14 +84,13 @@ public class drive2Fragment extends Fragment {
         }
 
         // ArrayList에 person 객체(이름과 번호) 넣기
-        ArrayList<ScrapModel> scrap = new ArrayList<>();
-        scrap.add(new ScrapModel("안녕하세요","Hi"));
-        scrap.add(new ScrapModel("오랜만이에요","Long time no see"));
-        scrap.add(new ScrapModel("어떻게 지내요?","How are you?"));
-        scrap.add(new ScrapModel("좋은 아침","Good morning"));
+        ArrayList<ScrapModel> scrapArray = new ArrayList<>();
 
+        for (int i = 0; i < scrap.length; i = i+2) {
+            scrapArray.add(new ScrapModel(scrap[i+1],scrap[i], scrap_id[i+1], scrap_id[i]));
+        }
         // Adapter생성
-        recyclerScrapAdapter = new RecyclerScrapAdapter(this,scrap);
+        recyclerScrapAdapter = new RecyclerScrapAdapter(this,scrapArray);
         recyclerView_scrap.setAdapter(recyclerScrapAdapter);
 
         return v;
