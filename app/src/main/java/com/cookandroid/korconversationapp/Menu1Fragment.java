@@ -99,9 +99,10 @@ public class Menu1Fragment extends Fragment {
                 allSampleData.add(situationModel);
 
             }
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+
 //         하드코딩(삭제하지 말것/유지용)
 //        for (int i = 1; i <= 3; i++) {
 //
@@ -138,4 +139,5 @@ public class Menu1Fragment extends Fragment {
         allRecommendData.add(recommendModel);
 
     }
+
 }

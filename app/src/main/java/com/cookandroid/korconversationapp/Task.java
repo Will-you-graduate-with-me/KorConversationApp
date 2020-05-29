@@ -30,7 +30,7 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
     }
     public Task(){}
     public String getString(){return LoadData;}
-    public static String ip = "http://18.224.202.42:8080/AndroidDBConnection/"; // 자신의 IP주소를 쓰시면 됩니다.
+    public static String ip = "http://3.20.87.90:8080/AndroidDBConnection/"; // 자신의 IP주소를 쓰시면 됩니다.
     //doInBackground 전에 동작
     @Override
     protected void onPreExecute() {

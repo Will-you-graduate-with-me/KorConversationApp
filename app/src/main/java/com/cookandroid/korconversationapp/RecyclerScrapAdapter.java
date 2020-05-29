@@ -12,13 +12,19 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RecyclerScrapAdapter extends RecyclerView.Adapter<RecyclerScrapAdapter.ViewHolder> {
 
     private ArrayList<ScrapModel> scrap;
     private Fragment fragment;
     ScrapModel data;
+    private FirebaseAuth mAuth ;
+    int current;
 
     public RecyclerScrapAdapter(Fragment fragment, ArrayList<ScrapModel> scrap) {
         this.scrap = scrap;
@@ -41,6 +47,7 @@ public class RecyclerScrapAdapter extends RecyclerView.Adapter<RecyclerScrapAdap
             sentence_eng = (TextView) itemView.findViewById(R.id.sentence_eng);
             btn_play = (Button) itemView.findViewById(R.id.btn_play);
             btn_cancel = (Button) itemView.findViewById(R.id.btn_cancel);
+
         }
     }
 
@@ -62,9 +69,18 @@ public class RecyclerScrapAdapter extends RecyclerView.Adapter<RecyclerScrapAdap
         holder.btn_play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String number = scrap.get(position).getScriptIDKor();
+                String part_no, unit_no;
+
+                part_no = String.valueOf(number.charAt(1));
+                unit_no = String.valueOf(number.charAt(4));
+                System.out.println("part_no : "+part_no +" unit_no : "+unit_no);
+
                 Intent intent = new Intent(fragment.getContext(), DialogActivity.class);
                 intent.putExtra("kor",holder.sentence_kor.getText());
                 intent.putExtra("eng",holder.sentence_kor.getText());
+                intent.putExtra("part_no",part_no);
+                intent.putExtra("unit_no",unit_no);
                 fragment.startActivity(intent);
             }
         });
@@ -72,9 +88,34 @@ public class RecyclerScrapAdapter extends RecyclerView.Adapter<RecyclerScrapAdap
         holder.btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scrap.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position, scrap.size());
+
+                mAuth = FirebaseAuth.getInstance();
+
+                try {
+
+                    Map<String, String> scrapparams_kor = new HashMap<String, String>();
+                    scrapparams_kor.put("user_id", mAuth.getUid());
+                    scrapparams_kor.put("script_id", scrap.get(position).getScriptIDKor());
+                    System.out.println("scriptid_kor : " + scrap.get(position).getScriptIDKor());
+
+                    Map<String, String> scrapparams_eng = new HashMap<String, String>();
+                    scrapparams_eng.put("user_id", mAuth.getUid());
+                    scrapparams_eng.put("script_id", scrap.get(position).getScriptIDEng());
+                    System.out.println("scriptid_eng : " + scrap.get(position).getScriptIDEng());
+
+                    Task Taskforscript = new Task("deleteScrappedScript", scrapparams_kor);
+                    Task Taskforscript2 = new Task("deleteScrappedScript", scrapparams_eng);
+
+                    Taskforscript.execute(scrapparams_kor).get();
+                    Taskforscript2.execute(scrapparams_eng).get();
+
+                    scrap.remove(position);
+                    notifyItemRemoved(position);
+                    notifyItemRangeChanged(position, scrap.size());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
