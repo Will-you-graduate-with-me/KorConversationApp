@@ -2,6 +2,7 @@ package com.cookandroid.korconversationapp;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,7 +84,6 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
         protected TextView kor;
         protected TextView eng;
         protected ImageView back;
-
 
         public SingleItemRowHolder(View view) {
             super(view);
