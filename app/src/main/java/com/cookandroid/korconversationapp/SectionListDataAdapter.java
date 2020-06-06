@@ -11,8 +11,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListDataAdapter.SingleItemRowHolder> {
 
@@ -58,6 +66,7 @@ public class SectionListDataAdapter extends RecyclerView.Adapter<SectionListData
                 intent.putExtra("eng",singleItem.getEng());
                 intent.putExtra("part_no",singleItem.getPart_no());
                 intent.putExtra("unit_no",singleItem.getUnit_no());
+
                 mfragment.startActivity(intent);
             }
         });

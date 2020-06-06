@@ -8,12 +8,21 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoadingActivity extends AppCompatActivity {
     ProgressBar progressBar;
-    String str_eng, str_kor,part_no,unit_no;
+    String str_eng, str_kor,part_no,unit_no, loading_script, loading_explanation;
     Handler handler;
     int progress_percent;
+    TextView text1, text2;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +36,43 @@ public class LoadingActivity extends AppCompatActivity {
         str_kor=intent.getStringExtra("kor");
         part_no=intent.getStringExtra("part_no");
         unit_no=intent.getStringExtra("unit_no");
+
+        // 로딩 데이터
+        String loadingInfo="";
+        try{
+            Task networkTask = new Task("loading_script");
+            Map<String, String> params = new HashMap<String, String>();
+            loadingInfo=networkTask.execute(params).get();
+            System.out.println(loadingInfo);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        try{
+            JSONArray jsonArray=new JSONArray(loadingInfo);
+
+            int random_id = (int)(Math.random()*10)+1;
+
+            for(int j=0; j<jsonArray.length(); j++)
+            {
+                JSONObject loadingScriptObject=(JSONObject)jsonArray.get(j);
+                if(Integer.parseInt(loadingScriptObject.get("loading_id").toString())==random_id){
+
+                    loading_script = loadingScriptObject.get("loading_script").toString();
+                    loading_explanation = loadingScriptObject.get("loading_explanation").toString();
+
+                }
+
+            }
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        text1 = findViewById(R.id.text1);
+        text2 = findViewById(R.id.text2);
+        text1.setText("#"+loading_script);
+        text2.setText(loading_explanation);
 
         new Thread() {
             public void run() {

@@ -2,6 +2,7 @@ package com.cookandroid.korconversationapp;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DialogActivity extends AppCompatActivity {
@@ -30,6 +32,8 @@ public class DialogActivity extends AppCompatActivity {
     String lyrics;
     int[] wrong = new int[20];
     int wrong_num;
+    public static String url = "http://sites.google.com/site/ubiaccessmobile/sample_audio.amr";
+    MediaPlayer player;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,15 @@ public class DialogActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        btn_aud.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                playAudio();
+
+            }
+        });
+
         btn_mic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,6 +90,30 @@ public class DialogActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void playAudio() {
+        try {
+            closePlayer();
+
+            player = new MediaPlayer();
+            player.setDataSource(url);
+            player.prepare();
+            player.start();
+
+            Toast.makeText(this, "재생 시작됨.", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /* 녹음 시 마이크 리소스 제한. 누군가가 lock 걸어놓으면 다른 앱에서 사용할 수 없음.
+     * 따라서 꼭 리소스를 해제해주어야함. */
+    public void closePlayer() {
+        if (player != null) {
+            player.release();
+            player = null;
+        }
     }
 
     public boolean onTouchEvent(MotionEvent event) {
