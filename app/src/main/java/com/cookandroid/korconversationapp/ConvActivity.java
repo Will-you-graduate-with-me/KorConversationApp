@@ -211,35 +211,11 @@ public class ConvActivity extends AppCompatActivity {
                             customExoPlayerView.releasePlayer();
                             // 2. 새 링크 설정
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
-                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
-                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
-                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
-                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
-                                Handler mHandler = new Handler();
-                                mHandler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        // 시간 지난 후 실행할 코딩
-                                        thread.interrupt();
-                                    }
-                                }, 20);
-                            }
                         }
                         else{
                             // 처음으로 비디오 플레이어 사용하는 경우
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
                             video_init = !video_init;
-                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
-                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
-                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
-                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
-                                Handler mHandler = new Handler();
-                                mHandler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        // 시간 지난 후 실행할 코딩
-                                        thread.interrupt();
-                                    }
-                                }, 20);
-                            }
                         }
                     }
                     num++; // 문장 처리하고 나서 숫자 추가
@@ -282,36 +258,11 @@ public class ConvActivity extends AppCompatActivity {
                             customExoPlayerView.releasePlayer();
                             // 2. 새 링크 설정
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
-                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
-                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
-                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
-                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
-                                Handler mHandler = new Handler();
-                                mHandler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        // 시간 지난 후 실행할 코딩
-                                        thread.interrupt();
-                                    }
-                                }, 20);
-                            }
                         }
                         else{
                             // 처음으로 비디오 플레이어 사용하는 경우
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
                             video_init = !video_init;
-
-                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
-                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
-                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
-                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
-                                Handler mHandler = new Handler();
-                                mHandler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        // 시간 지난 후 실행할 코딩
-                                        thread.interrupt();
-                                    }
-                                }, 20);
-                            }
                         }
                     }
                     // 케이스개수만큼 뛰어넘기위해 num+caseCount를 해줌
@@ -370,17 +321,14 @@ public class ConvActivity extends AppCompatActivity {
                                 handler.sendEmptyMessage(2);
                             }
                         }
+
                         try {
                             // 여기서의 딜레이가 a가 말할 때 생기는 시간임
                             // 지금은 2초뒤에 자동으로 다음단계로 넘어가도록 설정해뒀음
                             if(sentence_no[num].equals("a")) {
                                 // 동영상 끝나는 시간에 맞춰 넘겨야 함
-                                //System.out.println("getContentBufferedPosition"+customExoPlayerView.getPlayer().getContentBufferedPosition());
-                                //System.out.println("getTotalBufferedDuration"+customExoPlayerView.getPlayer().getTotalBufferedDuration());
-                                //System.out.println("getContentDuration"+customExoPlayerView.getPlayer().getContentDuration());
-                                //System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
-                                //System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
-                                //System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
+                                // 영상 시작할 때 로딩이 길어서 최소 시간을 10초로 설정함 
+                                // 여기서는 customExoPlayerView를 못가져옴..
                                 Thread.sleep(10000);
                             }
                         } catch (InterruptedException e) {
