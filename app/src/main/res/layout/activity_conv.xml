@@ -35,14 +35,13 @@
         android:textStyle="bold" />
 </LinearLayout>
 
-    <!--
+
     <com.cookandroid.korconversationapp.CustomExoPlayerView
         android:id="@+id/player_view"
         android:layout_width="match_parent"
+        app:keep_content_on_player_reset="true"
         android:layout_height="200dp"
-        app:show_buffering="always"
-        app:resize_mode="fill"/>
-        -->
+        app:resize_mode="fill" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"

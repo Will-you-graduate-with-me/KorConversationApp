@@ -67,7 +67,7 @@ public class CustomExoPlayerView extends PlayerView {
                     case Player.STATE_ENDED: // 4
                         // 완료
                         // 영상 마지막 프레임 보여주면서 끝내기
-                        player.prepare(mediaSource, false, false);
+                        //player.prepare(mediaSource, false, false);
                         break;
                     default:
                         break;
@@ -92,6 +92,7 @@ public class CustomExoPlayerView extends PlayerView {
         return new ExtractorMediaSource.Factory(new DefaultHttpDataSourceFactory(userAgent))
                 .createMediaSource(uri);
     }
+
 
     void releasePlayer() {
         if (player != null) {

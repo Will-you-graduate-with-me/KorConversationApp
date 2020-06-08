@@ -39,7 +39,7 @@ public class Task extends AsyncTask< Map<String, String>, Integer, String> {
 
     //원래 protected
     @Override
-    public String doInBackground( Map<String, String>... maps) { // 내가 전송하고 싶은 파라미터
+    public String doInBackground(Map<String, String>... maps) { // 내가 전송하고 싶은 파라미터
 
         // Http 요청 준비 작업
         HttpClient.Builder http = new HttpClient.Builder

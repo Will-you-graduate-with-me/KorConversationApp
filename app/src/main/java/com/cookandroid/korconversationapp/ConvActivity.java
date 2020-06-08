@@ -49,9 +49,8 @@ public class ConvActivity extends AppCompatActivity {
     int wrong_num;
     Thread thread;
     Runnable task;
-    boolean flag = true;
-    String part_unit_no_to_string;
-    final String url_header = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/";
+    boolean flag = true, video_init = true;
+    final String url_header = "@string/video_url_header";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,7 @@ public class ConvActivity extends AppCompatActivity {
         setContentView(R.layout.activity_conv);
 
         // Video Player
-        //customExoPlayerView = findViewById(R.id.player_view);
+        customExoPlayerView = (CustomExoPlayerView)findViewById(R.id.player_view);
 
         back = (ImageButton) findViewById(R.id.backbtn);
         speaker = (ImageButton) findViewById(R.id.btn_speak);
@@ -94,32 +93,6 @@ public class ConvActivity extends AppCompatActivity {
         part_no = intent.getStringExtra("part_no");
         unit_no = intent.getStringExtra("unit_no");
 
-        // ex) p1_u4_ : 동영상 url 써먹기 편하라고! 나머지 뒤에 인자들은 어디서 갖고 오는 지 모르것네요 허허;;
-        part_unit_no_to_string = "p"+part_no+"_"+"u"+unit_no+"_";
-
-        /*
-
-        @@@ Video Player @@@
-
-        // 가장 처음 문장 (인공지능이 말하는) 실행시에는 아래 문장 하나만 실행하면 됨
-        // 비디오 플레이어의 첫 실행이라서 releasePlayer (기존에 존재하는 플레이어 삭제하는거임) 없이 바로 initializeplayer만 하면 됨!
-        // url 구성은 url_header 변수랑 part_unit_no_to_string 변수 갖고 쓰면 편할듯..
-        // 지금 S3에는 https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p1_u4_a2_1_k.mp4 밖에 없음..! 참고!!
-        // 테스트 해보고 싶으면 영상 다운받아서 이름 여러개로 바꿔서 올리고 걔네 다 퍼블릭 설정 해두고 테스트하면 되는데.. 아마 영상 잘 나올거임
-        // 귀찮으니까 밑에 BigBuckBunny로 테스트해보삼요!
-
-        customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p1_u1_a1_1_k.mp4");
-
-
-        // 사용자가 말하고 나서 다시 인공지능이 받아치는 두 번째 실행부터는 이미 플레이어를 사용하고 난 뒤라서 꼭 지워주고 다시 만들어야함!
-        1. 기존 플레이어 지우기
-        customExoPlayerView.releasePlayer();
-        // 2. 새로운 인스턴스 다시 만들어서 영상 연결하기
-        customExoPlayerView.initializePlayer("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4");
-
-
-         */
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -130,6 +103,7 @@ public class ConvActivity extends AppCompatActivity {
                 finish();
             }
         });
+
         part_unit_no.setText("Part " + part_no + " > Unit " + unit_no);
 
         String scriptInfoKor = "";
@@ -202,13 +176,13 @@ public class ConvActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg){
                 // 메세지 1번 실행
                 if(msg.what == 1) {
                     // 메세지 1번은 케이스가 나뉘지 않는 문장들임
+
                     // 텍스트뷰 (케이스가 여러개일 때 각각 보여주는 공간) 숨기기
                     textview_kor[1].setVisibility(View.GONE);
                     textview_eng[1].setVisibility(View.GONE);
@@ -217,6 +191,7 @@ public class ConvActivity extends AppCompatActivity {
 
                     textview_kor[0].setText(scriptK[num]);
                     textview_eng[0].setText(scriptE[num]);
+
                     // 사용자가 말할 차례라면
                     if(sentence_no[num].equals("b")){
 
@@ -229,8 +204,45 @@ public class ConvActivity extends AppCompatActivity {
                         mRecognizer.setRecognitionListener(listener);
                         mRecognizer.startListening(i);
 
+                    } else{
+                        // 인공지능이 말할 단계: 합성된 영상 보여주기
+                        if(!video_init){
+                            // 1. 기존 플레이어 지우기
+                            customExoPlayerView.releasePlayer();
+                            // 2. 새 링크 설정
+                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
+                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
+                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
+                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
+                                Handler mHandler = new Handler();
+                                mHandler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        // 시간 지난 후 실행할 코딩
+                                        thread.interrupt();
+                                    }
+                                }, 20);
+                            }
+                        }
+                        else{
+                            // 처음으로 비디오 플레이어 사용하는 경우
+                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+                            video_init = !video_init;
+                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
+                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
+                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
+                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
+                                Handler mHandler = new Handler();
+                                mHandler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        // 시간 지난 후 실행할 코딩
+                                        thread.interrupt();
+                                    }
+                                }, 20);
+                            }
+                        }
                     }
-                    num++;
+                    num++; // 문장 처리하고 나서 숫자 추가
                 } else if(msg.what == 2) { // 메세지 2번 실행
                     // 메세지 2번은 케이스가 나뉘는 문장들임
                     if(caseCount == 2) { // 케이스가 2개라면
@@ -250,6 +262,8 @@ public class ConvActivity extends AppCompatActivity {
                         textview_kor[i-num].setText(scriptK[i]);
                         textview_eng[i-num].setText(scriptE[i]);
                     }
+
+
                     // 사용자라면 음성인식 시작
                     if(sentence_no[num].equals("b")){
 
@@ -261,6 +275,44 @@ public class ConvActivity extends AppCompatActivity {
                         mRecognizer.setRecognitionListener(listener);
                         mRecognizer.startListening(i);
 
+                    } else{
+                        // 인공지능이 말할 단계: 합성된 영상 보여주기
+                        if(!video_init){
+                            // 1. 기존 플레이어 지우기
+                            customExoPlayerView.releasePlayer();
+                            // 2. 새 링크 설정
+                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
+                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
+                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
+                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
+                                Handler mHandler = new Handler();
+                                mHandler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        // 시간 지난 후 실행할 코딩
+                                        thread.interrupt();
+                                    }
+                                }, 20);
+                            }
+                        }
+                        else{
+                            // 처음으로 비디오 플레이어 사용하는 경우
+                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+                            video_init = !video_init;
+
+                            System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
+                            System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
+                            System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
+                            if (customExoPlayerView.getPlayer().getPlaybackState()==4){
+                                Handler mHandler = new Handler();
+                                mHandler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        // 시간 지난 후 실행할 코딩
+                                        thread.interrupt();
+                                    }
+                                }, 20);
+                            }
+                        }
                     }
                     // 케이스개수만큼 뛰어넘기위해 num+caseCount를 해줌
                     num = num + caseCount;
@@ -281,10 +333,10 @@ public class ConvActivity extends AppCompatActivity {
                     wrong_num=0;
                     rightCount=0;
 
-                    // 배열의 크기를 벗어나지 않을 때 실행
+                    // 배열의 크기를 벗어나지 않을 때 실행 (학습할 문장들이 남아 있을 때)
                     if (num <= jsonArrayKor.length() - 1) {
                         // 케이스가 발생하는(갈라지는) 번호가 아닐 때
-                        if (num != caseNumber-1) {
+                        if (num != caseNumber-1) { // num은 시작할 때 값이 0임
                             // b라면 (사용자라면)
                             if(sentence_no[num].equals("b")) {
                                 // 1번 메세지를 넘겨줌 => 위에서 msg.what==1을 실행
@@ -297,7 +349,7 @@ public class ConvActivity extends AppCompatActivity {
                                     e.printStackTrace();
                                 }
 
-                            } else{
+                            } else{ // a 라면 (영상이라면)
                                 // 바로 실행 (스레드를 재우게되면 딜레이가 생기기때문에 여기서는 재우지않고 넘어감)
                                 handler.sendEmptyMessage(1);
                             }
@@ -313,6 +365,7 @@ public class ConvActivity extends AppCompatActivity {
                                 }
 
                             } else{
+                                // a라면
                                 // 바로 실행
                                 handler.sendEmptyMessage(2);
                             }
@@ -321,12 +374,20 @@ public class ConvActivity extends AppCompatActivity {
                             // 여기서의 딜레이가 a가 말할 때 생기는 시간임
                             // 지금은 2초뒤에 자동으로 다음단계로 넘어가도록 설정해뒀음
                             if(sentence_no[num].equals("a")) {
-                                Thread.sleep(2000);
+                                // 동영상 끝나는 시간에 맞춰 넘겨야 함
+                                //System.out.println("getContentBufferedPosition"+customExoPlayerView.getPlayer().getContentBufferedPosition());
+                                //System.out.println("getTotalBufferedDuration"+customExoPlayerView.getPlayer().getTotalBufferedDuration());
+                                //System.out.println("getContentDuration"+customExoPlayerView.getPlayer().getContentDuration());
+                                //System.out.println("getDuration"+customExoPlayerView.getPlayer().getDuration());
+                                //System.out.println("getPlaybackParameters"+customExoPlayerView.getPlayer().getPlaybackParameters());
+                                //System.out.println("getPlaybackState"+customExoPlayerView.getPlayer().getPlaybackState());
+                                Thread.sleep(10000);
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                     } else {
+                        // 더 학습할 스크립트가 남아있지 않을 때
                         thread.interrupt();
                         break;
                     }
@@ -496,7 +557,8 @@ public class ConvActivity extends AppCompatActivity {
 
         }
     };
-/*
+
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -520,5 +582,6 @@ public class ConvActivity extends AppCompatActivity {
             customExoPlayerView.releasePlayer();
         }
     }
-    */
+
+
 }
