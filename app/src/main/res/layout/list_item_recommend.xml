@@ -22,13 +22,10 @@
             android:layout_marginVertical="10dp"
             android:layout_marginStart="17dp"
             android:layout_marginLeft="17dp"
-            android:text="추천"
+            android:text="당신을 위해 추천합니다 꺄아~"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
-
-
-
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView

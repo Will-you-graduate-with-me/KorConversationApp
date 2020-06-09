@@ -1,7 +1,6 @@
 package com.cookandroid.korconversationapp;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,26 +9,24 @@ import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
-import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.exoplayer2.Player;
+import com.google.firebase.auth.FirebaseAuth;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class ConvActivity extends AppCompatActivity {
 
@@ -51,6 +48,7 @@ public class ConvActivity extends AppCompatActivity {
     Runnable task;
     boolean flag = true, video_init = true;
     final String url_header = "@string/video_url_header";
+    private FirebaseAuth mAuth ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,11 +209,65 @@ public class ConvActivity extends AppCompatActivity {
                             customExoPlayerView.releasePlayer();
                             // 2. 새 링크 설정
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+
+                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
+                                /**
+                                 * @param playWhenReady - Whether playback will proceed when ready.
+                                 * @param playbackState - One of the STATE constants.
+                                 */
+                                @Override
+                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                                    switch (playbackState) {
+                                        case Player.STATE_IDLE: // 1
+                                            //재생 실패
+                                            break;
+                                        case Player.STATE_BUFFERING: // 2
+                                            // 재생 준비
+                                            break;
+                                        case Player.STATE_READY: // 3
+                                            // 재생 준비 완료
+                                            break;
+                                        case Player.STATE_ENDED: // 4
+                                            // 완료
+                                            thread.interrupt();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            });
                         }
                         else{
                             // 처음으로 비디오 플레이어 사용하는 경우
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
                             video_init = !video_init;
+
+                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
+                                /**
+                                 * @param playWhenReady - Whether playback will proceed when ready.
+                                 * @param playbackState - One of the STATE constants.
+                                 */
+                                @Override
+                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                                    switch (playbackState) {
+                                        case Player.STATE_IDLE: // 1
+                                            //재생 실패
+                                            break;
+                                        case Player.STATE_BUFFERING: // 2
+                                            // 재생 준비
+                                            break;
+                                        case Player.STATE_READY: // 3
+                                            // 재생 준비 완료
+                                            break;
+                                        case Player.STATE_ENDED: // 4
+                                            // 완료
+                                            thread.interrupt();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            });
                         }
                     }
                     num++; // 문장 처리하고 나서 숫자 추가
@@ -253,16 +305,69 @@ public class ConvActivity extends AppCompatActivity {
 
                     } else{
                         // 인공지능이 말할 단계: 합성된 영상 보여주기
-                        if(!video_init){
+                        if(!video_init) {
                             // 1. 기존 플레이어 지우기
                             customExoPlayerView.releasePlayer();
                             // 2. 새 링크 설정
-                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p" + part_no + "/" + script_id_kor[num] + ".mp4");
+                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
+                                /**
+                                 * @param playWhenReady - Whether playback will proceed when ready.
+                                 * @param playbackState - One of the STATE constants.
+                                 */
+                                @Override
+                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                                    switch (playbackState) {
+                                        case Player.STATE_IDLE: // 1
+                                            //재생 실패
+                                            break;
+                                        case Player.STATE_BUFFERING: // 2
+                                            // 재생 준비
+                                            break;
+                                        case Player.STATE_READY: // 3
+                                            // 재생 준비 완료
+                                            break;
+                                        case Player.STATE_ENDED: // 4
+                                            // 완료
+                                            thread.interrupt();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            });
                         }
                         else{
                             // 처음으로 비디오 플레이어 사용하는 경우
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
                             video_init = !video_init;
+
+                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
+                                /**
+                                 * @param playWhenReady - Whether playback will proceed when ready.
+                                 * @param playbackState - One of the STATE constants.
+                                 */
+                                @Override
+                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                                    switch (playbackState) {
+                                        case Player.STATE_IDLE: // 1
+                                            //재생 실패
+                                            break;
+                                        case Player.STATE_BUFFERING: // 2
+                                            // 재생 준비
+                                            break;
+                                        case Player.STATE_READY: // 3
+                                            // 재생 준비 완료
+                                            break;
+                                        case Player.STATE_ENDED: // 4
+                                            // 완료
+                                            thread.interrupt();
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            });
                         }
                     }
                     // 케이스개수만큼 뛰어넘기위해 num+caseCount를 해줌
@@ -295,7 +400,7 @@ public class ConvActivity extends AppCompatActivity {
                                 try {
                                     // 10초동안 스레드 재우기
                                     // 사용자가 말하지 않아도 10초 후엔 강제로 넘어갈 수 있도록 해줌
-                                    Thread.sleep(10000);
+                                    Thread.sleep(5000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -310,7 +415,7 @@ public class ConvActivity extends AppCompatActivity {
                                 // 2번 메세지를 넘겨줌 => 위에서 msg.what==2를 실행
                                 handler.sendEmptyMessage(2);
                                 try {
-                                    Thread.sleep(10000); // 원래 20000
+                                    Thread.sleep(5000); // 원래 20000
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -327,7 +432,7 @@ public class ConvActivity extends AppCompatActivity {
                             // 지금은 2초뒤에 자동으로 다음단계로 넘어가도록 설정해뒀음
                             if(sentence_no[num].equals("a")) {
                                 // 동영상 끝나는 시간에 맞춰 넘겨야 함
-                                // 영상 시작할 때 로딩이 길어서 최소 시간을 10초로 설정함 
+                                // 영상 시작할 때 로딩이 길어서 최소 시간을 10초로 설정함
                                 // 여기서는 customExoPlayerView를 못가져옴..
                                 Thread.sleep(10000);
                             }
@@ -342,6 +447,8 @@ public class ConvActivity extends AppCompatActivity {
                 }
                 // 배열이 끝나면 더 학습할 스크립트가 남아있지 않으므로 결과창으로 넘어감
                 if(num > jsonArrayKor.length()-1) {
+
+
                     // 결과 화면 보여주기
                     Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
                     i.putExtra("length", jsonArrayKor.length());
