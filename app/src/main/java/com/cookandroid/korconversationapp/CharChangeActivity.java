@@ -53,7 +53,6 @@ public class CharChangeActivity extends AppCompatActivity {
                 }
                 else {
                     try{
-
                         //User정보 가져오기
                         Map<String, String> userparams = new HashMap<String, String>();
                         userparams.put("user_id",mAuth.getUid());

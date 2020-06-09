@@ -6,7 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+
 import java.util.ArrayList;
 
 public class RecommendListDataAdapter extends RecyclerView.Adapter<RecommendListDataAdapter.SingleItemRowHolder> {
@@ -26,7 +30,7 @@ public class RecommendListDataAdapter extends RecyclerView.Adapter<RecommendList
         SingleItemRowHolder mh = new SingleItemRowHolder(v);
         //final ConvModel singleItem = itemsList.get(i);
         ConvModel singleItem = itemsList.get(i);
-        final String k=singleItem.getKor();
+        //final String k=singleItem.getKor();
 
         return mh;
     }
@@ -35,10 +39,15 @@ public class RecommendListDataAdapter extends RecyclerView.Adapter<RecommendList
     public void onBindViewHolder(SingleItemRowHolder holder, int i) {
 
         final ConvModel singleItem = itemsList.get(i);
+        String base_url="https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_image/";
+
+        String img_back_url=base_url+singleItem.getSituation_back()+".png";
 
         holder.when.setText(singleItem.getWhen());
         holder.eng.setText(singleItem.getEng());
         holder.kor.setText(singleItem.getKor());
+        Glide.with(mfragment).load(img_back_url).centerCrop().into(holder.back);
+
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +70,7 @@ public class RecommendListDataAdapter extends RecyclerView.Adapter<RecommendList
         protected TextView when;
         protected TextView kor;
         protected TextView eng;
-
+        protected ImageView back;
 
         public SingleItemRowHolder(View view) {
             super(view);
@@ -69,7 +78,7 @@ public class RecommendListDataAdapter extends RecyclerView.Adapter<RecommendList
             this.when = (TextView) view.findViewById(R.id.when);
             this.kor=(TextView)view.findViewById(R.id.kor);
             this.eng=(TextView)view.findViewById(R.id.eng);
-
+            this.back=(ImageView)view.findViewById(R.id.unit_back);
 
         }
 
