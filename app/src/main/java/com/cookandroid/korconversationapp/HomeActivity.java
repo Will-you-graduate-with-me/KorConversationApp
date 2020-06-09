@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                 userparams.put("age",Integer.toString(age));
                 Task insertTask=new Task("insertUserID",userparams);
                 insertTask.execute(userparams);
-                ///
+
             }
 
         } catch (Exception e) {
@@ -114,7 +114,5 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 }

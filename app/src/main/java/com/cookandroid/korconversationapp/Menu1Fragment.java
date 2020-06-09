@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -28,6 +29,8 @@ public class Menu1Fragment extends Fragment {
     ArrayList<SituationModel> allSampleData;
     ArrayList<RecommendModel> allRecommendData;
 
+    String UserRecommendInfo="";
+    private FirebaseAuth mAuth ;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -127,17 +130,39 @@ public class Menu1Fragment extends Fragment {
     //추천 데이터
     public void recommendData() {
 
-        RecommendModel recommendModel = new RecommendModel();
+        try{
+            //User정보 가져오기
+            Map<String, String> userparams = new HashMap<String, String>();
+            userparams.put("user_id","null");
+            Task networkTask=new Task("selectUserRecommend",userparams);
+            UserRecommendInfo=networkTask.execute(userparams).get();
 
-        ArrayList<ConvModel> singleItem_recommend = new ArrayList<ConvModel>();
-        singleItem_recommend.add(new ConvModel("쇼핑 할 때", "img1", "이거 얼마에요?" ,"How much is it?"));
-        singleItem_recommend.add(new ConvModel("감사 할 때", "img2", "고마워요","Thank you" ));
-        singleItem_recommend.add(new ConvModel("쇼핑 할 때", "img1", "이거 얼마에요?" ,"How much is it?"));
-        singleItem_recommend.add(new ConvModel("감사 할 때", "img2", "고마워요","Thank you" ));
-        recommendModel.setRecommendItems(singleItem_recommend);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        try{
+            JSONArray jsonArray=new JSONArray(UserRecommendInfo);
 
-        allRecommendData.add(recommendModel);
+            RecommendModel recommendModel = new RecommendModel();
+            ArrayList<ConvModel> singleItem_recommend = new ArrayList<ConvModel>();
+
+            for(int i=0; i<jsonArray.length(); i++) {
+                JSONObject recommendObject=(JSONObject)jsonArray.get(i);
+
+                singleItem_recommend.add(new ConvModel(recommendObject.get("unit_name").toString(),
+                     recommendObject.get("main_sentence_kor").toString(),
+                     recommendObject.get("main_sentence_eng").toString(),
+                     recommendObject.get("part_no").toString(),
+                     recommendObject.get("unit_no").toString(),
+                     recommendObject.get("situation_back").toString()));
+            }
+
+            recommendModel.setRecommendItems(singleItem_recommend);
+            allRecommendData.add(recommendModel);
+
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
-
 }
