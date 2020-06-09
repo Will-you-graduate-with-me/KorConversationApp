@@ -47,33 +47,6 @@ public class CustomExoPlayerView extends PlayerView {
         //mediaSource.addMediaSource(mediaSource2);
 
         player = ExoPlayerFactory.newSimpleInstance(getContext());
-        player.addListener(new Player.EventListener() {
-            /**
-             * @param playWhenReady - Whether playback will proceed when ready.
-             * @param playbackState - One of the STATE constants.
-             */
-            @Override
-            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                switch (playbackState) {
-                    case Player.STATE_IDLE: // 1
-                        //재생 실패
-                        break;
-                    case Player.STATE_BUFFERING: // 2
-                        // 재생 준비
-                        break;
-                    case Player.STATE_READY: // 3
-                        // 재생 준비 완료
-                        break;
-                    case Player.STATE_ENDED: // 4
-                        // 완료
-                        // 영상 마지막 프레임 보여주면서 끝내기
-                        //player.prepare(mediaSource, false, false);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
 
         setPlayer(player);
         setUseController(false);

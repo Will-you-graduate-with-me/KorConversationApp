@@ -209,65 +209,13 @@ public class ConvActivity extends AppCompatActivity {
                             customExoPlayerView.releasePlayer();
                             // 2. 새 링크 설정
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
-
-                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
-                                /**
-                                 * @param playWhenReady - Whether playback will proceed when ready.
-                                 * @param playbackState - One of the STATE constants.
-                                 */
-                                @Override
-                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                                    switch (playbackState) {
-                                        case Player.STATE_IDLE: // 1
-                                            //재생 실패
-                                            break;
-                                        case Player.STATE_BUFFERING: // 2
-                                            // 재생 준비
-                                            break;
-                                        case Player.STATE_READY: // 3
-                                            // 재생 준비 완료
-                                            break;
-                                        case Player.STATE_ENDED: // 4
-                                            // 완료
-                                            thread.interrupt();
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            });
+                            customExoPlayerView.getPlayer().addListener(eventListener);
                         }
                         else{
                             // 처음으로 비디오 플레이어 사용하는 경우
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
                             video_init = !video_init;
-
-                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
-                                /**
-                                 * @param playWhenReady - Whether playback will proceed when ready.
-                                 * @param playbackState - One of the STATE constants.
-                                 */
-                                @Override
-                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                                    switch (playbackState) {
-                                        case Player.STATE_IDLE: // 1
-                                            //재생 실패
-                                            break;
-                                        case Player.STATE_BUFFERING: // 2
-                                            // 재생 준비
-                                            break;
-                                        case Player.STATE_READY: // 3
-                                            // 재생 준비 완료
-                                            break;
-                                        case Player.STATE_ENDED: // 4
-                                            // 완료
-                                            thread.interrupt();
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            });
+                            customExoPlayerView.getPlayer().addListener(eventListener);
                         }
                     }
                     num++; // 문장 처리하고 나서 숫자 추가
@@ -310,64 +258,13 @@ public class ConvActivity extends AppCompatActivity {
                             customExoPlayerView.releasePlayer();
                             // 2. 새 링크 설정
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p" + part_no + "/" + script_id_kor[num] + ".mp4");
-                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
-                                /**
-                                 * @param playWhenReady - Whether playback will proceed when ready.
-                                 * @param playbackState - One of the STATE constants.
-                                 */
-                                @Override
-                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                                    switch (playbackState) {
-                                        case Player.STATE_IDLE: // 1
-                                            //재생 실패
-                                            break;
-                                        case Player.STATE_BUFFERING: // 2
-                                            // 재생 준비
-                                            break;
-                                        case Player.STATE_READY: // 3
-                                            // 재생 준비 완료
-                                            break;
-                                        case Player.STATE_ENDED: // 4
-                                            // 완료
-                                            thread.interrupt();
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            });
+                            customExoPlayerView.getPlayer().addListener(eventListener);
                         }
                         else{
                             // 처음으로 비디오 플레이어 사용하는 경우
                             customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
                             video_init = !video_init;
-
-                            customExoPlayerView.getPlayer().addListener(new Player.EventListener() {
-                                /**
-                                 * @param playWhenReady - Whether playback will proceed when ready.
-                                 * @param playbackState - One of the STATE constants.
-                                 */
-                                @Override
-                                public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                                    switch (playbackState) {
-                                        case Player.STATE_IDLE: // 1
-                                            //재생 실패
-                                            break;
-                                        case Player.STATE_BUFFERING: // 2
-                                            // 재생 준비
-                                            break;
-                                        case Player.STATE_READY: // 3
-                                            // 재생 준비 완료
-                                            break;
-                                        case Player.STATE_ENDED: // 4
-                                            // 완료
-                                            thread.interrupt();
-                                            break;
-                                        default:
-                                            break;
-                                    }
-                                }
-                            });
+                            customExoPlayerView.getPlayer().addListener(eventListener);
                         }
                     }
                     // 케이스개수만큼 뛰어넘기위해 num+caseCount를 해줌
@@ -471,6 +368,33 @@ public class ConvActivity extends AppCompatActivity {
 
 
     }
+
+
+
+    private final Player.EventListener eventListener = new Player.EventListener() {
+        @Override
+        public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+            switch (playbackState) {
+                case Player.STATE_IDLE: // 1
+                    //재생 실패
+                    break;
+                case Player.STATE_BUFFERING: // 2
+                    // 재생 준비
+                    break;
+                case Player.STATE_READY: // 3
+                    // 재생 준비 완료
+                    break;
+                case Player.STATE_ENDED: // 4
+                    // 완료
+                    thread.interrupt();
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
+
+
 
     private final RecognitionListener listener = new RecognitionListener() {
         @Override
