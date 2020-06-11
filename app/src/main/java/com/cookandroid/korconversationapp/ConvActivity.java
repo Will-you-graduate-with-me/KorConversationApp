@@ -331,7 +331,7 @@ public class ConvActivity extends AppCompatActivity {
                                 // 동영상 끝나는 시간에 맞춰 넘겨야 함
                                 // 영상 시작할 때 로딩이 길어서 최소 시간을 10초로 설정함
                                 // 여기서는 customExoPlayerView를 못가져옴..
-                                Thread.sleep(10000);
+                                Thread.sleep(20000);
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
@@ -460,6 +460,8 @@ public class ConvActivity extends AppCompatActivity {
             }
 
             Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+            thread.interrupt();
+
         }
 
         @Override
@@ -515,14 +517,8 @@ public class ConvActivity extends AppCompatActivity {
 
                 kor_script.setText(sb);
 
-                Handler mHandler = new Handler();
-                mHandler.postDelayed(new Runnable() {
-                    public void run() {
-                        // 시간 지난 후 실행할 코딩
-                        thread.interrupt();
-                        kor_script.setText("");
-                    }
-                }, 2000);
+                thread.interrupt();
+                kor_script.setText("");
             }
 
         }
