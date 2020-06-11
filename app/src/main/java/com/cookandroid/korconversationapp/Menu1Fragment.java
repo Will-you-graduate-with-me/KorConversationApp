@@ -133,7 +133,7 @@ public class Menu1Fragment extends Fragment {
         try{
             //User정보 가져오기
             Map<String, String> userparams = new HashMap<String, String>();
-            userparams.put("user_id","null");
+            userparams.put("user_id",null);
             Task networkTask=new Task("selectUserRecommend",userparams);
             UserRecommendInfo=networkTask.execute(userparams).get();
 
