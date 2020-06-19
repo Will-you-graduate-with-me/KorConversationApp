@@ -96,8 +96,12 @@ public class ConvActivity extends AppCompatActivity {
             public void onClick(View view) {
                 thread.interrupt();
                 flag = false;
-                mRecognizer.destroy();
-                mRecognizer.cancel();
+                onStop();
+                if (mRecognizer != null) {
+                    mRecognizer.destroy();
+                    mRecognizer.cancel();
+                }
+
                 finish();
             }
         });
