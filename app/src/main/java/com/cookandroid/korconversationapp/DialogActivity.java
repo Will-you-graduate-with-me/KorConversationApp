@@ -32,8 +32,9 @@ public class DialogActivity extends AppCompatActivity {
     String lyrics;
     int[] wrong = new int[20];
     int wrong_num;
-    public static String url = "http://sites.google.com/site/ubiaccessmobile/sample_audio.amr";
+    public static String url;
     MediaPlayer player;
+    public String kor_id, part_no;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,8 @@ public class DialogActivity extends AppCompatActivity {
 
         String kor = intent.getExtras().getString("kor");
         String eng = intent.getExtras().getString("eng");
-        String part_no = intent.getExtras().getString("part_no");
+        kor_id = intent.getExtras().getString("kor_id");
+        part_no = intent.getExtras().getString("part_no");
         String unit_no = intent.getExtras().getString("unit_no");
         tv_kor.setText(kor);
         tv_eng.setText(eng);
@@ -73,8 +75,9 @@ public class DialogActivity extends AppCompatActivity {
         btn_aud.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                url = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_voice/p"+part_no+"/"+kor_id+".mp3";
+                System.out.println(url);
                 playAudio();
-
             }
         });
 

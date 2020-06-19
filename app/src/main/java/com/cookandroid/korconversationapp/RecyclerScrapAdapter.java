@@ -78,7 +78,8 @@ public class RecyclerScrapAdapter extends RecyclerView.Adapter<RecyclerScrapAdap
 
                 Intent intent = new Intent(fragment.getContext(), DialogActivity.class);
                 intent.putExtra("kor",holder.sentence_kor.getText());
-                intent.putExtra("eng",holder.sentence_kor.getText());
+                intent.putExtra("eng",holder.sentence_eng.getText());
+                intent.putExtra("kor_id",scrap.get(position).getScriptIDKor());
                 intent.putExtra("part_no",part_no);
                 intent.putExtra("unit_no",unit_no);
                 fragment.startActivity(intent);

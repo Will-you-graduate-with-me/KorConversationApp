@@ -38,6 +38,7 @@ public class Menu1Fragment extends Fragment {
         View v=inflater.inflate(R.layout.page_home, container, false);
         allSampleData=new ArrayList<SituationModel>();
         allRecommendData=new ArrayList<RecommendModel>();
+        mAuth = FirebaseAuth.getInstance();
         createData();
         recommendData();
 
@@ -133,8 +134,7 @@ public class Menu1Fragment extends Fragment {
         try{
             //User정보 가져오기
             Map<String, String> userparams = new HashMap<String, String>();
-            userparams.put("user_id",null);
-
+            userparams.put("user_id","3");
             Task networkTask=new Task("selectUserRecommend",userparams);
             UserRecommendInfo=networkTask.execute(userparams).get();
 

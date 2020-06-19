@@ -1,6 +1,8 @@
 package com.cookandroid.korconversationapp;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -67,20 +69,41 @@ public class Menu3Fragment extends Fragment {
         point1=(TextView)v.findViewById(R.id.point1); //닉네임
         nameChange=(TextView)v.findViewById(R.id.nameChange);//닉네임 변경
         charChange=(TextView)v.findViewById(R.id.charChange);//캐릭터 변경
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signOut();
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         signout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                revokeAccess();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+
+                AlertDialog.Builder alert_confirm = new AlertDialog.Builder(getActivity());
+                alert_confirm.setMessage("회원 탈퇴 후 앱을 종료하시겠습니까?").setCancelable(false).setPositiveButton("확인",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 'YES'
+                                revokeAccess();
+                                signOut();
+                                getActivity().finish();
+                            }
+                        }).setNegativeButton("취소",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // 'No'
+                                return;
+                            }
+                        });
+                AlertDialog alert = alert_confirm.create();
+                alert.show();
+
             }
         });
         nameChange.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +150,18 @@ public class Menu3Fragment extends Fragment {
 
     //회원탈퇴
     private void revokeAccess() {
+        try {
+
+            Map<String, String> deleteparams = new HashMap<String, String>();
+            deleteparams.put("user_id", mAuth.getUid());
+
+            Task deleteID = new Task("deleteUserInfo", deleteparams);
+
+            deleteID.execute(deleteparams).get();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mAuth.getCurrentUser().delete();
     }
 
