@@ -243,7 +243,16 @@ public class ConvActivity extends AppCompatActivity {
                         textview_eng[i-num].setText(scriptE[i]);
                     }
 
+                    // 케이스는 사용자 차례일 때만 발생
+                    i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                    i.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getPackageName());
+                    i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "ko-KR");
 
+                    mRecognizer = SpeechRecognizer.createSpeechRecognizer(getApplicationContext());
+                    mRecognizer.setRecognitionListener(listener);
+                    mRecognizer.startListening(i);
+
+                    /*
                     // 사용자라면 음성인식 시작
                     if(sentence_no[num].equals("b")){
 
@@ -271,6 +280,7 @@ public class ConvActivity extends AppCompatActivity {
                             customExoPlayerView.getPlayer().addListener(eventListener);
                         }
                     }
+                    */
                     // 케이스개수만큼 뛰어넘기위해 num+caseCount를 해줌
                     num = num + caseCount;
                 }
@@ -311,6 +321,15 @@ public class ConvActivity extends AppCompatActivity {
                                 handler.sendEmptyMessage(1);
                             }
                         } else { // 케이스가 발생하는 번호일 때
+                            // 케이스 발생은 b에서만 발생
+                            // 2번 메세지를 넘겨줌 => 위에서 msg.what==2를 실행
+                            handler.sendEmptyMessage(2);
+                            try {
+                                Thread.sleep(5000); // 원래 20000
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            /*
                             // b라면 (사용자라면)
                             if(sentence_no[num].equals("b")) {
                                 // 2번 메세지를 넘겨줌 => 위에서 msg.what==2를 실행
@@ -326,6 +345,7 @@ public class ConvActivity extends AppCompatActivity {
                                 // 바로 실행
                                 handler.sendEmptyMessage(2);
                             }
+                            */
                         }
 
                         try {
@@ -335,7 +355,7 @@ public class ConvActivity extends AppCompatActivity {
                                 // 동영상 끝나는 시간에 맞춰 넘겨야 함
                                 // 영상 시작할 때 로딩이 길어서 최소 시간을 10초로 설정함
                                 // 여기서는 customExoPlayerView를 못가져옴..
-                                Thread.sleep(20000);
+                                Thread.sleep(10000);
                             }
                         } catch (InterruptedException e) {
                             e.printStackTrace();
