@@ -40,7 +40,8 @@
         android:id="@+id/player_view"
         android:layout_width="match_parent"
         app:keep_content_on_player_reset="true"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="50dp"
         app:resize_mode="fill" />
 
     <android.support.v7.widget.CardView
@@ -133,14 +134,27 @@
                 android:id="@+id/kor_script"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
                 android:textSize="25sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/eng2" />
+                app:layout_constraintTop_toBottomOf="@+id/eng3" />
 
+            <TextView
+                android:id="@+id/speak"
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_login"
+                android:gravity="center"
+                android:layout_marginBottom="20dp"
+                android:text="지금 말하세요"
+                android:textSize="25sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
 
         </android.support.constraint.ConstraintLayout>
 
-
     </android.support.v7.widget.CardView>
+
 </LinearLayout>
