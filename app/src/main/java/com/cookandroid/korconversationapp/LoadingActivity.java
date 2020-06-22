@@ -32,8 +32,6 @@ public class LoadingActivity extends AppCompatActivity {
         progressBar = (ProgressBar)findViewById(R.id.progressbar);
 
         Intent intent=new Intent(this.getIntent());
-        str_eng=intent.getStringExtra("eng");
-        str_kor=intent.getStringExtra("kor");
         part_no=intent.getStringExtra("part_no");
         unit_no=intent.getStringExtra("unit_no");
 
@@ -85,8 +83,6 @@ public class LoadingActivity extends AppCompatActivity {
 
                             if(progress_percent >= 100) {
                                 Intent new_intent = new Intent(LoadingActivity.this, ConvActivity.class);
-                                new_intent.putExtra("kor",str_kor);
-                                new_intent.putExtra("eng",str_eng);
                                 new_intent.putExtra("part_no",part_no);
                                 new_intent.putExtra("unit_no",unit_no);
                                 startActivity(new_intent);

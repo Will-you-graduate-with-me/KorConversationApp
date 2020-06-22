@@ -33,7 +33,7 @@
         android:layout_width="150dp"
         android:layout_height="200dp"
         android:scaleType="fitXY"
-        android:src="@drawable/taeyeon"
+        android:src="@drawable/chungha"
         android:layout_marginTop="100dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/charTitle2"/>
@@ -52,7 +52,7 @@
         android:id="@+id/text1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="태연"
+        android:text="청하"
         android:layout_marginTop="20dp"
         android:textSize="30sp"
         app:layout_constraintLeft_toLeftOf="@+id/img1"

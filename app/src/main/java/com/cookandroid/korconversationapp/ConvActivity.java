@@ -32,12 +32,11 @@ public class ConvActivity extends AppCompatActivity {
 
     CustomExoPlayerView customExoPlayerView;
     ImageButton back, speaker, restart, grade, check;
-    Button repeat;
     TextView kor_script;
     TextView[] textview_kor = new TextView[3];
     TextView[] textview_eng = new TextView[3];
-    String str_eng, str_kor, part_no, unit_no;
-    TextView part_unit_no;
+    String part_no, unit_no;
+    TextView part_unit_no, speak;
     int caseCount, caseNumber, num=0, rightCount;
     JSONArray jsonArrayKor;
     String[] scriptK, scriptE, script_id_kor, script_id_eng, sentence_no;
@@ -49,6 +48,7 @@ public class ConvActivity extends AppCompatActivity {
     boolean flag = true, video_init = true;
     final String url_header = "@string/video_url_header";
     private FirebaseAuth mAuth ;
+    Boolean singleResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +56,6 @@ public class ConvActivity extends AppCompatActivity {
 
         int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
         int newUiOptions = uiOptions;
-        boolean isImmersiveModeEnabled = ((uiOptions | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == uiOptions);
 
         newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
         newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
@@ -70,11 +69,8 @@ public class ConvActivity extends AppCompatActivity {
 
         back = (ImageButton) findViewById(R.id.backbtn);
         speaker = (ImageButton) findViewById(R.id.btn_speak);
-//        restart=(ImageButton)findViewById(R.id.btn_restart);
-//        grade=(ImageButton)findViewById(R.id.btn_grade);
-//        check=(ImageButton)findViewById(R.id.btn_check);
-//        repeat=(Button)findViewById(R.id.btn_repeat);
 
+        speak = (TextView) findViewById(R.id.speak);
         part_unit_no = (TextView) findViewById(R.id.part_unit_no);
         textview_eng[0] = (TextView) findViewById(R.id.eng);
         textview_kor[0] = (TextView) findViewById(R.id.kor);
@@ -86,8 +82,6 @@ public class ConvActivity extends AppCompatActivity {
         kor_script.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent = new Intent(this.getIntent());
-        str_eng = intent.getStringExtra("eng");
-        str_kor = intent.getStringExtra("kor");
         part_no = intent.getStringExtra("part_no");
         unit_no = intent.getStringExtra("unit_no");
 
@@ -181,6 +175,9 @@ public class ConvActivity extends AppCompatActivity {
         final Handler handler = new Handler() {
             @Override
             public void handleMessage(Message msg){
+                kor_script.setText("");
+                kor_script.setVisibility(View.GONE);
+
                 // 메세지 1번 실행
                 if(msg.what == 1) {
                     // 메세지 1번은 케이스가 나뉘지 않는 문장들임
@@ -196,6 +193,9 @@ public class ConvActivity extends AppCompatActivity {
 
                     // 사용자가 말할 차례라면
                     if(sentence_no[num].equals("b")){
+                        speaker.setVisibility(View.GONE);
+
+                        singleResult = true;
 
                         // 음성인식 시작 코드들
                         i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -207,6 +207,8 @@ public class ConvActivity extends AppCompatActivity {
                         mRecognizer.startListening(i);
 
                     } else{
+                        speaker.setVisibility(View.VISIBLE);
+                        speak.setVisibility(View.GONE);
                         // 인공지능이 말할 단계: 합성된 영상 보여주기
                         if(!video_init){
                             // 1. 기존 플레이어 지우기
@@ -224,6 +226,10 @@ public class ConvActivity extends AppCompatActivity {
                     }
                     num++; // 문장 처리하고 나서 숫자 추가
                 } else if(msg.what == 2) { // 메세지 2번 실행
+                    speaker.setVisibility(View.GONE);
+
+                    singleResult = true;
+
                     // 메세지 2번은 케이스가 나뉘는 문장들임
                     if(caseCount == 2) { // 케이스가 2개라면
                         // 추가로 텍스트뷰 하나만 더 보여줌
@@ -239,7 +245,7 @@ public class ConvActivity extends AppCompatActivity {
 
                     // 케이스 개수대로 텍스트뷰에 나타내는 것
                     for (int i = num; i < num + caseCount; i++) {
-                        textview_kor[i-num].setText(scriptK[i]);
+                        textview_kor[i-num].setText("case"+(i-num+1)+"> "+scriptK[i]);
                         textview_eng[i-num].setText(scriptE[i]);
                     }
 
@@ -308,13 +314,6 @@ public class ConvActivity extends AppCompatActivity {
                             if(sentence_no[num].equals("b")) {
                                 // 1번 메세지를 넘겨줌 => 위에서 msg.what==1을 실행
                                 handler.sendEmptyMessage(1);
-                                try {
-                                    // 10초동안 스레드 재우기
-                                    // 사용자가 말하지 않아도 10초 후엔 강제로 넘어갈 수 있도록 해줌
-                                    Thread.sleep(5000);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
 
                             } else{ // a 라면 (영상이라면)
                                 // 바로 실행 (스레드를 재우게되면 딜레이가 생기기때문에 여기서는 재우지않고 넘어감)
@@ -324,11 +323,6 @@ public class ConvActivity extends AppCompatActivity {
                             // 케이스 발생은 b에서만 발생
                             // 2번 메세지를 넘겨줌 => 위에서 msg.what==2를 실행
                             handler.sendEmptyMessage(2);
-                            try {
-                                Thread.sleep(5000); // 원래 20000
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
                             /*
                             // b라면 (사용자라면)
                             if(sentence_no[num].equals("b")) {
@@ -349,17 +343,13 @@ public class ConvActivity extends AppCompatActivity {
                         }
 
                         try {
-                            // 여기서의 딜레이가 a가 말할 때 생기는 시간임
-                            // 지금은 2초뒤에 자동으로 다음단계로 넘어가도록 설정해뒀음
-                            if(sentence_no[num].equals("a")) {
-                                // 동영상 끝나는 시간에 맞춰 넘겨야 함
-                                // 영상 시작할 때 로딩이 길어서 최소 시간을 10초로 설정함
-                                // 여기서는 customExoPlayerView를 못가져옴..
-                                Thread.sleep(10000);
-                            }
+                            // a,b 사용없이 15초동안 스레드 재우기
+                            // 어차피 interrupt 쓰기 때문에 재워도 상관없음
+                            Thread.sleep(15000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+
                     } else {
                         // 더 학습할 스크립트가 남아있지 않을 때
                         thread.interrupt();
@@ -423,8 +413,8 @@ public class ConvActivity extends AppCompatActivity {
     private final RecognitionListener listener = new RecognitionListener() {
         @Override
         public void onReadyForSpeech(Bundle params) {
-
-            Toast.makeText(getApplicationContext(), "음성인식을 시작합니다.", Toast.LENGTH_SHORT).show();
+            speak.setVisibility(View.VISIBLE);
+            //Toast.makeText(getApplicationContext(), "음성인식을 시작합니다.", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -490,21 +480,22 @@ public class ConvActivity extends AppCompatActivity {
 
         @Override
         public void onResults(Bundle results) {
-            // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어줍니다.
-            ArrayList<String> matches =
-                    results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-            String recText_org = matches.get(0); //인식된 음성정보
-            String recText = recText_org.replace(" ", ""); //인식된 음성정보 공백제거
+                // 말을 하면 ArrayList에 단어를 넣고 textView에 단어를 이어줍니다.
+                kor_script.setVisibility(View.VISIBLE);
+                ArrayList<String> matches =
+                        results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+                String recText_org = matches.get(0); //인식된 음성정보
+                String recText = recText_org.replace(" ", ""); //인식된 음성정보 공백제거
 
-            String lyrics_org = textview_kor[0].getText().toString(); //가사 정보
-            String lyrics = lyrics_org.replace(" ", ""); //가사정보 공백제거
-            lyrics = lyrics.replace(".", ""); //가사정보 온점제거
-            lyrics = lyrics.replace("!",""); //가사정보 느낌표제거
+                String lyrics_org = textview_kor[0].getText().toString(); //가사 정보
+                String lyrics = lyrics_org.replace(" ", ""); //가사정보 공백제거
+                lyrics = lyrics.replace(".", ""); //가사정보 온점제거
+                lyrics = lyrics.replace("!", ""); //가사정보 느낌표제거
 
-            SpannableStringBuilder sb = new SpannableStringBuilder(recText_org);
+                SpannableStringBuilder sb = new SpannableStringBuilder(recText_org);
 
-            // 음성이 인식되면 넘어가기
-            if (recText_org!="") {
+                // 음성이 인식되면 넘어가기
+                if (recText_org != "") {
                 /* 틀린거 찾고 색깔 바꿔주는 부분 (오류 뜰까봐 주석처리)
                 int length = (recText.length() > lyrics.length()) ? recText.length() : lyrics.length();
                 int[] wrong = new int[20];
@@ -539,11 +530,20 @@ public class ConvActivity extends AppCompatActivity {
                 }
                 */
 
-                kor_script.setText(sb);
+                    kor_script.setText(sb);
 
-                thread.interrupt();
-                kor_script.setText("");
-            }
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            //여기에 딜레이 후 시작할 작업들을 입력
+                            if(singleResult) {
+                                System.out.println("반복하는 중인가");
+                                singleResult = false;
+                                thread.interrupt();
+                            }
+                        }
+                    }, 2000);
+                }
 
         }
 

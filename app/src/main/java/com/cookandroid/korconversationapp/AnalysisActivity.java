@@ -30,6 +30,15 @@ public class AnalysisActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int uiOptions = getWindow().getDecorView().getSystemUiVisibility();
+        int newUiOptions = uiOptions;
+
+        newUiOptions ^= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_FULLSCREEN;
+        newUiOptions ^= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+        getWindow().getDecorView().setSystemUiVisibility(newUiOptions);
+
         setContentView(R.layout.activity_analysis);
 
         Acontext = this;
@@ -69,7 +78,9 @@ public class AnalysisActivity extends AppCompatActivity {
         btn_RE.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(AnalysisActivity.this, ConvActivity.class);
+                Intent i = new Intent(AnalysisActivity.this, LoadingActivity.class);
+                i.putExtra("part_no",part_no);
+                i.putExtra("unit_no",unit_no);
                 startActivity(i);
                 finish();
             }
