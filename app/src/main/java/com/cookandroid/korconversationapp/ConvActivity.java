@@ -359,6 +359,20 @@ public class ConvActivity extends AppCompatActivity {
                 // 배열이 끝나면 더 학습할 스크립트가 남아있지 않으므로 결과창으로 넘어감
                 if(num > jsonArrayKor.length()-1) {
 
+                    // 결과화면 보여주기 전에 먼저 recent_id 업데이트
+                    mAuth = FirebaseAuth.getInstance();
+
+                    Map<String, String> historyparams2 = new HashMap<String, String>();
+
+                    historyparams2.put("user_id", mAuth.getUid());
+                    historyparams2.put("part_no", part_no);
+                    historyparams2.put("unit_no", unit_no);
+
+                    System.out.println(mAuth.getUid()+"/"+ part_no + "/" + unit_no);
+
+                    Task Taskforhistory2 = new Task("updateRecentID", historyparams2);
+
+                    Taskforhistory2.execute(historyparams2);
 
                     // 결과 화면 보여주기
                     Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);

@@ -3,6 +3,8 @@ package com.cookandroid.korconversationapp;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -96,23 +98,22 @@ public class AnalysisActivity extends AppCompatActivity {
 
                 try {
                     Map<String, String> historyparams = new HashMap<String, String>();
-                    Map<String, String> historyparams2 = new HashMap<String, String>();
+                    Map<String, String> updateparams = new HashMap<String, String>();
 
                     historyparams.put("user_id", mAuth.getUid());
                     historyparams.put("part_no", part_no);
                     historyparams.put("unit_no", unit_no);
                     historyparams.put("grade", "B");
 
-                    historyparams2.put("user_id", mAuth.getUid());
-                    historyparams2.put("part_no", part_no);
-                    historyparams2.put("unit_no", unit_no);
+                    // 업데이트 된 history count, recent_id를 바탕으로 새로운 interest_id 갱신
+                    updateparams.put("user_id", mAuth.getUid());
 
                     System.out.println(mAuth.getUid()+"/"+ part_no + "/" + unit_no);
                     Task Taskforhistory = new Task("insertHistoryByCase", historyparams);
-                    Task Taskforhistory2 = new Task("updateRecentID", historyparams2);
+                    TaskForFlask TaskforUpdateInterestID = new TaskForFlask("cfRecommend", updateparams);
 
                     historyInfo = Taskforhistory.execute(historyparams).get();
-                    Taskforhistory2.execute(historyparams2).get();
+                    TaskforUpdateInterestID.execute(updateparams);
                     System.out.println("historyInfo : " + historyInfo);
 
                 } catch (Exception e) {
@@ -127,7 +128,6 @@ public class AnalysisActivity extends AppCompatActivity {
                         Map<String, String> scriptparams = new HashMap<String, String>();
                         scriptparams.put("user_id", mAuth.getUid());
                         scriptparams.put("script_id", scriptArray.get(i));
-
 
                         Task Taskforscript = new Task("insertScrappedScript", scriptparams);
 

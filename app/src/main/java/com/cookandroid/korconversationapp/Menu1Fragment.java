@@ -38,7 +38,7 @@ public class Menu1Fragment extends Fragment {
         View v=inflater.inflate(R.layout.page_home, container, false);
         allSampleData=new ArrayList<SituationModel>();
         allRecommendData=new ArrayList<RecommendModel>();
-        mAuth = FirebaseAuth.getInstance();
+
         createData();
         recommendData();
 
@@ -47,6 +47,8 @@ public class Menu1Fragment extends Fragment {
         RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, allSampleData, allRecommendData);
         my_recycler_view.setLayoutManager(new LinearLayoutManager(v.getContext(), LinearLayoutManager.VERTICAL, false));
         my_recycler_view.setAdapter(adapter);
+
+        // adapter.notifyDataSetChanged();
 
         return v;
 
@@ -133,6 +135,8 @@ public class Menu1Fragment extends Fragment {
 
         try{
             //User정보 가져오기
+            mAuth = FirebaseAuth.getInstance();
+
             Map<String, String> userparams = new HashMap<String, String>();
             userparams.put("user_id",mAuth.getUid());
             Task networkTask=new Task("selectUserRecommend",userparams);
