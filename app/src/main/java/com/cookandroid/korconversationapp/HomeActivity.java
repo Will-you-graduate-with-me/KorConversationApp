@@ -69,14 +69,23 @@ public class HomeActivity extends AppCompatActivity {
                 //insert
                 //만약 작동 안한다면 try-catch 없애고 밑에 주석표시한 부분만 밖으로 빼내기
                 Map<String, String> userparams = new HashMap<String, String>();
+                Map<String, String> userparamsForFlask = new HashMap<>();
+
                 userparams.put("user_id",user_id);
+                userparamsForFlask.put("user_id", user_id);
                 System.out.println("유저아이디 :" + user_id);
                 userparams.put("nickname",nickname);
                 userparams.put("stay_duration",Integer.toString(stay_duration));
+                userparamsForFlask.put("stay_duration",Integer.toString(stay_duration));
                 userparams.put("character_id",Integer.toString(character_id));
                 userparams.put("age",Integer.toString(age));
+                userparamsForFlask.put("age",Integer.toString(age));
+
                 Task insertTask=new Task("insertUserID",userparams);
+                TaskForFlask insertInterestIDTask=new TaskForFlask("fuzzyRecommend",userparamsForFlask);
+
                 insertTask.execute(userparams);
+                insertInterestIDTask.execute(userparamsForFlask);
 
             }
 
