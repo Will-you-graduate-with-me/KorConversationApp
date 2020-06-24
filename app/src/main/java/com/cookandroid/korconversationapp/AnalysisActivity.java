@@ -139,6 +139,7 @@ public class AnalysisActivity extends AppCompatActivity {
 
                 }
 
+                onResume();
                 finish();
             }
         });

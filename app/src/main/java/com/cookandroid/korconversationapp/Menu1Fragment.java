@@ -54,6 +54,24 @@ public class Menu1Fragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //View v=inflate(R.layout.page_home, container, false);
+
+        allSampleData=new ArrayList<SituationModel>();
+        allRecommendData=new ArrayList<RecommendModel>();
+
+        createData();
+        recommendData();
+
+        RecyclerView my_recycler_view = (RecyclerView) getView().findViewById(R.id.my_recycler_view);
+        my_recycler_view.setHasFixedSize(true);
+        RecyclerViewDataAdapter adapter = new RecyclerViewDataAdapter(this, allSampleData, allRecommendData);
+        my_recycler_view.setLayoutManager(new LinearLayoutManager(getView().getContext(), LinearLayoutManager.VERTICAL, false));
+        my_recycler_view.setAdapter(adapter);
+    }
+
     //part 별 데이터, unit 별 데이터
     public void createData() {
 
