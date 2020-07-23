@@ -201,58 +201,80 @@ public class DialogActivity extends AppCompatActivity {
             String recText_org = matches.get(0); //인식된 음성정보
             recText = recText_org.replace(" ", ""); //인식된 음성정보 공백제거
 
-            String lyrics_org = tv_kor.getText().toString(); //가사 정보
-            lyrics = lyrics_org.replace(" ", ""); //가사정보 공백제거
-            lyrics = lyrics.replace(".", ""); //가사정보 온점제거
-            lyrics = lyrics.replace("!",""); //가사정보 느낌표제거
-
             SpannableStringBuilder sb = new SpannableStringBuilder(recText_org);
 
-            int length = (recText.length()>lyrics.length())?recText.length():lyrics.length();
-            for (int i = 0; i < length; i++) {
-                try {
-                    if ((recText.charAt(i)) == (lyrics.charAt(i))) {  //음성정보와 가사와 비교
-                        rightCount++; // 맞은 개수 체크
+            String lyrics_org = tv_kor.getText().toString(); //가사 정보
+
+            String[] test = new String[recText_org.length()];
+
+            int num = 0;
+
+            test = new String[recText_org.length()];
+
+            // '/'로 전부 바꾸기
+            for (int j = 0; j < lyrics_org.length(); j++) {
+                if((lyrics_org.charAt(j)) == ' ' || (lyrics_org.charAt(j)) == '.'  || (lyrics_org.charAt(j)) == '!' || (lyrics_org.charAt(j)) == '?') {
+                    lyrics = lyrics_org.replace(" ", "/"); //가사정보 공백제거
+                    lyrics = lyrics.replace(".", "/"); //가사정보 온점제거
+                    lyrics = lyrics.replace("!", "/"); //가사정보 느낌표제거
+                    lyrics = lyrics.replace("?", "/"); //가사정보 물음표제거
+                    test[num] = String.valueOf(j);
+                    num++;
+                }
+
+                for (int k=num; k<recText_org.length(); k++) {
+                    test[k] = String.valueOf("");
+                }
+            }
+
+            for (int k=0; k<test.length; k++) {
+                for (int j = 0; j<recText.length(); j++) {
+                    if(test[k].equals("")) {
+                        continue;
                     } else {
-                        wrong[wrong_num] = i; // 틀린 부분 저장
+                        if (test[k].equals(String.valueOf(j))) {
+                            recText = recText.substring(0,j) +"/"+ recText.substring(j);
+                        }
+                    }
+                }
+            }
+
+            // 마지막에 붙은 특수문자때문에 '/'를 추가해줌
+            recText = recText + "/";
+
+            System.out.println("문장 : "+recText);
+
+            // 해당 문장과 발음한 문장 비교
+            int length = (recText.length()>lyrics.length())?recText.length():lyrics.length();
+            for (int j = 0; j < length; j++) {
+                try {
+                    if ((recText.charAt(j)) == (lyrics.charAt(j))) {  //음성정보와 가사와 비교
+                        continue;
+                    } else {
+                        wrong[wrong_num] = j; // 틀린 부분 저장
                         wrong_num++;
                     }
                 } catch (Exception e) {
-                    wrong[wrong_num] = i; // 틀린 부분 저장
+                    wrong[wrong_num] = j; // 틀린 부분 저장
                     wrong_num++;
                 }
             }
 
             for(int j=0; j<wrong_num; j++) {
-                for(int i=0; i<recText_org.length(); i++) {
+                for(int k=0; k<recText_org.length(); k++) {
                     try {
-                        if((recText_org.charAt(i)) == (recText.charAt(wrong[j]))) { // 기존 예시에서 틀린 부분 찾기
+                        if((recText_org.charAt(k)) == (recText.charAt(wrong[j]))) { // 기존 예시에서 틀린 부분 찾기
                             // 틀린 부분 색깔 바꾸기
                             ForegroundColorSpan span = new ForegroundColorSpan(Color.parseColor("#FFFA5252"));
-                            sb.setSpan(span, i, i+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                            sb.setSpan(span, k, k+1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                         }
                     } catch (Exception e) {
                         break;
                     }
                 }
-
             }
 
             tv_wrong.setText(sb);
-
-            /* 문장 스크랩에서는 사용하지 않는 기능
-            if(rightCount >= recText.length()-3) { // 맞은 개수 확인
-                tv_wrong.setText(sb);
-                btn.setEnabled(true);
-
-            } else { // 제대로 말할 때까지 반복
-                tv_wrong.setText(sb);
-                btn.setEnabled(false);
-                Toast.makeText(getApplicationContext(), "다시 말해주세요.", Toast.LENGTH_SHORT).show();
-                rightCount=0;
-                wrong_num=0;
-                mRecognizer.startListening(i);
-            }*/
 
         }
 
