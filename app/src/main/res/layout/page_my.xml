@@ -16,8 +16,8 @@
         android:layout_marginRight="10dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="17dp"
+        android:paddingBottom="17dp"
         android:background="#e1e1e1"
         android:id="@+id/pointView">
         <TextView
@@ -25,37 +25,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="닉네임"
-            android:textSize="20sp"
+            android:layout_marginLeft="20dp"
+            android:textSize="23sp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/point2"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="포인트"
-            android:gravity="right"
-            android:textSize="20sp"
-            app:layout_constraintRight_toLeftOf="@+id/point3"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/point3"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="0"
-            android:textSize="20sp"
-            app:layout_constraintRight_toLeftOf="@id/point4"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/point4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="점"
-            android:textSize="20sp"
-            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
     </android.support.constraint.ConstraintLayout>
