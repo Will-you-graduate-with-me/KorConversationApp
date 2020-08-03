@@ -90,6 +90,7 @@ public class drive3Fragment extends Fragment {
             tv.setText(part_unit_no);
         }
 
+
         String lowPart="";
         try {
 
