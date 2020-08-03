@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -24,10 +25,12 @@ public class AnalysisActivity extends AppCompatActivity {
     LinearLayoutManager linearLayoutManager;
     RecyclerAnalysisAdapter recyclerAnalysisAdapter;
     Button btn_OK, btn_RE;
+    TextView tv_grade;
     private FirebaseAuth mAuth ;
     public static Context Acontext;
     ArrayList<String> scriptArray = new ArrayList<>();
-    String part_no, unit_no;
+    String part_no, unit_no, grade;
+    int all_count, wrong_count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +68,19 @@ public class AnalysisActivity extends AppCompatActivity {
         }
         part_no = i.getStringExtra("part_no");
         unit_no = i.getStringExtra("unit_no");
+
+        tv_grade = findViewById(R.id.grade);
+        all_count = Integer.parseInt(i.getStringExtra("all_count"));
+        wrong_count = Integer.parseInt(i.getStringExtra("wrong_count"));
+        if(((all_count-wrong_count)/all_count)*100>=90)
+            grade = "A";
+        else if(((all_count-wrong_count)/all_count)*100>=80)
+            grade = "B";
+        else
+            grade = "C";
+        System.out.println("all_count : "+all_count+" / wrong_count : "+wrong_count+" / grade : "+grade);
+        tv_grade.setText(grade);
+
         ArrayList<AnalysisModel> sentence = new ArrayList<>();
 
         for(int j=0; j<length; j++) {
@@ -103,7 +119,7 @@ public class AnalysisActivity extends AppCompatActivity {
                     historyparams.put("user_id", mAuth.getUid());
                     historyparams.put("part_no", part_no);
                     historyparams.put("unit_no", unit_no);
-                    historyparams.put("grade", "B");
+                    historyparams.put("grade", grade);
 
                     // 업데이트 된 history count, recent_id를 바탕으로 새로운 interest_id 갱신
                     updateparams.put("user_id", mAuth.getUid());
