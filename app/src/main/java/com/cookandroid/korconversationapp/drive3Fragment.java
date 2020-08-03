@@ -58,13 +58,11 @@ public class drive3Fragment extends Fragment {
             Task TaskforGrade = new Task("selectLowGraded", params_scrapped);
 
             lowGrade = TaskforGrade.execute(params_scrapped).get();
-            System.out.println("c등급 유닛 정보 : " + lowGrade);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
         String part_unit_no="";
-
         try {
 
             JSONArray jsonArrayGradeInfo = new JSONArray(lowGrade);
@@ -72,9 +70,11 @@ public class drive3Fragment extends Fragment {
             unit_no = new String[jsonArrayGradeInfo.length()];
             part_no = new String[jsonArrayGradeInfo.length()];
 
+            JSONObject gradeInfo2 = (JSONObject) jsonArrayGradeInfo.get(0);
+
+
             for (int i = 0; i < jsonArrayGradeInfo.length(); i++) {
                 JSONObject gradeInfo = (JSONObject) jsonArrayGradeInfo.get(i);
-
                 part_no[i] = gradeInfo.get("part_no").toString();
                 unit_no[i] = gradeInfo.get("unit_no").toString();
                 part_unit_no+=" PART "+part_no[i]+" - UNIT "+unit_no[i] +"\n";
@@ -83,6 +83,13 @@ public class drive3Fragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        if(lowGrade.equals("[]") ){
+            tv.setText("없습니다.");
+        }else{
+            tv.setText(part_unit_no);
+        }
+
         String lowPart="";
         try {
 
@@ -113,7 +120,6 @@ public class drive3Fragment extends Fragment {
             e.printStackTrace();
         }
 
-        tv.setText(part_unit_no);
         tv_result.setText("PART "+ a+"입니다.");
 
         //회원별 등급개수
@@ -144,29 +150,30 @@ public class drive3Fragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println(">>>>"+gradeA+"/"+gradeB+"/"+gradeC);
 
+        //PieChart
         percentA=gradeA/(gradeA+gradeB+gradeC)*100;
         percentB=gradeB/(gradeA+gradeB+gradeC)*100;
         percentC=gradeC/(gradeA+gradeB+gradeC)*100;
-        System.out.println(">>>>"+percentA+"/"+percentB+"/"+percentC);
 
         pieChart.setUsePercentValues(true);
         pieChart.getDescription().setEnabled(false);
         pieChart.setExtraOffsets(5,10,5,5);
-
         pieChart.setDragDecelerationFrictionCoef(0.95f);
-
         pieChart.setDrawHoleEnabled(false);
         pieChart.setHoleColor(Color.WHITE);
         pieChart.setTransparentCircleRadius(61f);
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
 
-        yValues.add(new PieEntry(percentA,"A"));
-        yValues.add(new PieEntry(percentB,"B"));
-        yValues.add(new PieEntry(percentC,"C"));
+        if(percentA!=0)
+            yValues.add(new PieEntry(percentA,"A"));
 
+        if(percentB!=0)
+            yValues.add(new PieEntry(percentB,"B"));
+
+        if(percentC!=0)
+            yValues.add(new PieEntry(percentC,"C"));
 
         pieChart.animateY(1000, Easing.EasingOption.EaseInOutCubic); //애니메이션
 
@@ -176,7 +183,7 @@ public class drive3Fragment extends Fragment {
         dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         PieData data = new PieData((dataSet));
-        data.setValueTextSize(10f);
+        data.setValueTextSize(15f);
         data.setValueTextColor(Color.YELLOW);
 
         pieChart.setData(data);
