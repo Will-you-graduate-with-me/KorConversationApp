@@ -38,6 +38,8 @@ public class drive3Fragment extends Fragment {
     int part=0,unit=0;
     TextView tv,tv_result;
     String[] unit_no, part_no;
+    int random_num=0;
+    String random_part_unit_no="";
 
     @Nullable
     @Override
@@ -72,13 +74,16 @@ public class drive3Fragment extends Fragment {
 
             JSONObject gradeInfo2 = (JSONObject) jsonArrayGradeInfo.get(0);
 
+            random_num=(int)(Math.random()*jsonArrayGradeInfo.length());
 
             for (int i = 0; i < jsonArrayGradeInfo.length(); i++) {
                 JSONObject gradeInfo = (JSONObject) jsonArrayGradeInfo.get(i);
                 part_no[i] = gradeInfo.get("part_no").toString();
                 unit_no[i] = gradeInfo.get("unit_no").toString();
-                part_unit_no+=" PART "+part_no[i]+" - UNIT "+unit_no[i] +"\n";
+                part_unit_no+=" PART "+part_no[i]+" - UNIT "+unit_no[i] +"\n"; // 등급 c인 part_no, unit_no 리스트
             }
+
+            random_part_unit_no=" PART "+part_no[random_num]+" - UNIT "+unit_no[random_num];
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -87,7 +92,7 @@ public class drive3Fragment extends Fragment {
         if(lowGrade.equals("[]") ){
             tv.setText("없습니다.");
         }else{
-            tv.setText(part_unit_no);
+            tv.setText(random_part_unit_no);
         }
 
 
