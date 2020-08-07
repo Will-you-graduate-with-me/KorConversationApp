@@ -92,7 +92,7 @@ public class drive3Fragment extends Fragment {
         if(lowGrade.equals("[]") ){
             tv.setText("없습니다.");
         }else{
-            tv.setText(random_part_unit_no);
+            tv.setText(random_part_unit_no );
         }
 
 
@@ -126,7 +126,7 @@ public class drive3Fragment extends Fragment {
             e.printStackTrace();
         }
 
-        tv_result.setText("PART "+ a+"입니다.");
+        tv_result.setText("PART "+ a);
 
         //회원별 등급개수
         try{
