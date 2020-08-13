@@ -26,7 +26,7 @@ public class UserInfoActivity extends AppCompatActivity {
         Intent preIntent=getIntent();
         user_id=preIntent.getStringExtra("user_id");
         nickname=preIntent.getStringExtra("nickname");
-        character_id=preIntent.getIntExtra("character_id",3);
+        character_id=preIntent.getIntExtra("video_id",3);
 
 
         age_edit=(EditText)findViewById(R.id.age_edit);
@@ -48,7 +48,7 @@ public class UserInfoActivity extends AppCompatActivity {
                     stay_duration=Integer.parseInt(stay_duration_edit.getText().toString());
                 }
                 Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
-                intent.putExtra("character_id",character_id);
+                intent.putExtra("video_id",character_id);
                 intent.putExtra("nickname",nickname);
                 intent.putExtra("user_id",user_id);
                 intent.putExtra("stay_duration",stay_duration);

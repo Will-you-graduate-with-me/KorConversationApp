@@ -17,7 +17,7 @@ public class CharChangeActivity extends AppCompatActivity {
 
 
     Button btn_charOK;
-    ImageButton char1,char2;
+    ImageButton char1,char2, char3, char4;
     int character_id=0;
     String user_id="";
     private FirebaseAuth mAuth ;
@@ -31,6 +31,8 @@ public class CharChangeActivity extends AppCompatActivity {
 
         char1=(ImageButton)findViewById(R.id.img1);
         char2=(ImageButton)findViewById(R.id.img2);
+        char3=(ImageButton)findViewById(R.id.img3);
+        char4=(ImageButton)findViewById(R.id.img4);
         char1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -41,6 +43,20 @@ public class CharChangeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 character_id=2;
+
+            }
+        });
+        char3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                character_id=3;
+
+            }
+        });
+        char4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                character_id=4;
 
             }
         });
@@ -56,9 +72,9 @@ public class CharChangeActivity extends AppCompatActivity {
                         //User정보 가져오기
                         Map<String, String> userparams = new HashMap<String, String>();
                         userparams.put("user_id",mAuth.getUid());
-                        userparams.put("character_id",Integer.toString(character_id));
+                        userparams.put("video_id",Integer.toString(character_id));
 
-                        Task Task=new Task("updateCharacter",userparams);
+                        Task Task=new Task("updateVideoStyle",userparams);
                         Task.execute(userparams).get();
                     }catch (Exception e){
                         e.printStackTrace();
