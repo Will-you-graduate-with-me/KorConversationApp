@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
         user_id=preIntent.getStringExtra("user_id");
         nickname=preIntent.getStringExtra("nickname");
         stay_duration=preIntent.getIntExtra("stay_duration",999);
-        character_id=preIntent.getIntExtra("character_id",999);
+        character_id=preIntent.getIntExtra("video_id",999);
         age=preIntent.getIntExtra("age",999);
 
         String userInfo = "";
@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                 userparams.put("nickname",nickname);
                 userparams.put("stay_duration",Integer.toString(stay_duration));
                 userparamsForFlask.put("stay_duration",Integer.toString(stay_duration));
-                userparams.put("character_id",Integer.toString(character_id));
+                userparams.put("video_id",Integer.toString(character_id));
                 userparams.put("age",Integer.toString(age));
                 userparamsForFlask.put("age",Integer.toString(age));
 

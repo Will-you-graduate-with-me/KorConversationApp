@@ -35,7 +35,7 @@ public class ConvActivity extends AppCompatActivity {
 
     CustomExoPlayerView customExoPlayerView;
     ImageButton back, speaker, restart, grade, check;
-    TextView kor_script;
+    TextView kor_script, skip;
     TextView[] textview_kor = new TextView[3];
     TextView[] textview_eng = new TextView[3];
     String part_no, unit_no, recText;
@@ -83,11 +83,42 @@ public class ConvActivity extends AppCompatActivity {
         textview_eng[2] = (TextView) findViewById(R.id.eng3);
         textview_kor[2] = (TextView) findViewById(R.id.kor3);
         kor_script = (TextView) findViewById(R.id.kor_script);
+        skip = (TextView) findViewById(R.id.skip);
         kor_script.setMovementMethod(new ScrollingMovementMethod());
 
         Intent intent = new Intent(this.getIntent());
         part_no = intent.getStringExtra("part_no");
         unit_no = intent.getStringExtra("unit_no");
+
+        skip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // 다 멈추기
+                thread.interrupt();
+                flag = false;
+                onStop();
+                if (mRecognizer != null) {
+                    mRecognizer.destroy();
+                    mRecognizer.cancel();
+                }
+
+                // 결과 화면 보여주기
+                Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
+                i.putExtra("length", jsonArrayKor.length());
+                for (int j = 0; j < jsonArrayKor.length(); j++) {
+                    i.putExtra("kor_" + j, scriptK[j]);
+                    i.putExtra("scriptidkor_"+j, script_id_kor[j]);
+                    i.putExtra("scriptideng_"+j, script_id_eng[j]);
+                    i.putExtra("part_no", part_no);
+                    i.putExtra("unit_no", unit_no);
+                    i.putExtra("all_count", Integer.toString(1));
+                    i.putExtra("wrong_count", Integer.toString(1));
+                }
+                startActivity(i);
+                finish();
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -659,7 +690,6 @@ public class ConvActivity extends AppCompatActivity {
                 public void run() {
                     //여기에 딜레이 후 시작할 작업들을 입력
                     if(singleResult) {
-                        System.out.println("반복하는 중인가");
                         singleResult = false;
                         textview_kor[max_num].setTextColor(Color.GRAY);
                         textview_eng[max_num].setTextColor(Color.GRAY);
