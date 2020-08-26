@@ -66,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
-        android:text="캐릭터 변경"
+        android:text="화풍 변경"
         android:textSize="25sp"
         app:layout_constraintTop_toBottomOf="@+id/line2" />
 

@@ -36,6 +36,7 @@ public class RecyclerHistoryAdapter extends RecyclerView.Adapter<RecyclerHistory
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView category;
         TextView situation;
+        TextView grade;
         ImageView back;
 
         public ViewHolder(View itemView) {
@@ -43,6 +44,7 @@ public class RecyclerHistoryAdapter extends RecyclerView.Adapter<RecyclerHistory
             category = (TextView) itemView.findViewById(R.id.category);
             situation = (TextView) itemView.findViewById(R.id.situation);
             back = (ImageView) itemView.findViewById(R.id.back);
+            grade = (TextView) itemView.findViewById(R.id.grade);
         }
     }
 
@@ -64,6 +66,7 @@ public class RecyclerHistoryAdapter extends RecyclerView.Adapter<RecyclerHistory
         // 데이터 결합
         holder.category.setText("PART " + data.getCategory() +". "+data.getPart_name());
         holder.situation.setText(data.getUnit_name());
+        holder.grade.setText(data.getGrade());
         Glide.with(fragment).load(img_back_url).centerCrop().into(holder.back);
 
 

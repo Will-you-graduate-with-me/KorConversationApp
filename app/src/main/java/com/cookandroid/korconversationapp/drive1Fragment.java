@@ -61,20 +61,20 @@ public class drive1Fragment extends Fragment {
             JSONArray jsonArrayHistory = new JSONArray(historyInfo);
             historyArray = new ArrayList<>();
 
-            String part_name, unit_name, part_no, unit_no, situation_back;
+            String part_name, unit_name, part_no, unit_no, situation_back, grade;
 
             for (int i = 0; i < jsonArrayHistory.length(); i++) {
-                JSONObject scrapped = (JSONObject) jsonArrayHistory.get(i);
-                System.out.println("받아온 정보 : " + scrapped);
+                JSONObject history = (JSONObject) jsonArrayHistory.get(i);
+                System.out.println("받아온 정보 : " + history);
 
-                part_name = scrapped.get("part_name").toString();
-                unit_name = scrapped.get("unit_name").toString();
-                part_no = scrapped.get("part_no").toString();
-                unit_no = scrapped.get("unit_no").toString();
-                situation_back = scrapped.get("situation_back").toString();
-
+                part_name = history.get("part_name").toString();
+                unit_name = history.get("unit_name").toString();
+                part_no = history.get("part_no").toString();
+                unit_no = history.get("unit_no").toString();
+                situation_back = history.get("situation_back").toString();
+                grade = history.get("grade").toString();
                 // ArrayList에 person 객체(이름과 번호) 넣기
-                historyArray.add(new HistoryModel(part_name, unit_name, part_no, unit_no, situation_back));
+                historyArray.add(new HistoryModel(part_name, unit_name, part_no, unit_no, situation_back,grade));
 
             }
 

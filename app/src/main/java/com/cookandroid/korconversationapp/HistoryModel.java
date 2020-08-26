@@ -6,13 +6,23 @@ public class HistoryModel {
     String category;
     String situation;
     String situation_back;
+    String grade;
 
-    public HistoryModel(String part_name, String unit_name, String category, String situation, String situation_back) {
+    public HistoryModel(String part_name, String unit_name, String category, String situation, String situation_back,String grade) {
         this.part_name = part_name;
         this.unit_name = unit_name;
         this.category = category;
         this.situation = situation;
         this.situation_back = situation_back;
+        this.grade=grade;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
+    public void setGrade(String grade) {
+        this.grade = grade;
     }
 
     public String getPart_name() {

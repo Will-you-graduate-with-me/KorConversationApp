@@ -33,18 +33,38 @@
             android:padding="5dp"
             android:text="sampleText"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/situation"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="left"
-            android:padding="5dp"
-            android:text="sampleText"
-            android:textColor="@android:color/black"
-            android:textSize="17sp" />
+            android:layout_height="53dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/situation"
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="53dp"
+                android:gravity="left"
+                android:padding="5dp"
+                android:text="sampleText"
+                android:textColor="@android:color/black"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/grade"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="53dp"
+                android:gravity="left"
+                android:padding="5dp"
+                android:text="sampleText"
+                android:textColor="@android:color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+         </LinearLayout>
+
+
 
 
     </LinearLayout>

@@ -10,7 +10,7 @@ import android.widget.ImageButton;
 public class CharacterActivity extends AppCompatActivity {
 
     Button btn_charOK;
-    ImageButton char1,char2, char3, char4;
+    ImageButton char1,char2, char3;
     int character_id=0;
     String user_id;
     String nickname;
@@ -26,7 +26,6 @@ public class CharacterActivity extends AppCompatActivity {
         char1=(ImageButton)findViewById(R.id.img1);
         char2=(ImageButton)findViewById(R.id.img2);
         char3=(ImageButton)findViewById(R.id.img3);
-        char4=(ImageButton)findViewById(R.id.img4);
         char1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,13 +46,7 @@ public class CharacterActivity extends AppCompatActivity {
 
             }
         });
-        char4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                character_id=4;
 
-            }
-        });
         btn_charOK=(Button)findViewById(R.id.btn_charOK);
         btn_charOK.setOnClickListener(new View.OnClickListener() {
             @Override
