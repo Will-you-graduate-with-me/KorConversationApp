@@ -120,6 +120,7 @@ public class Menu3Fragment extends Fragment {
                 startActivity(intent);
             }
         });
+        /* 없어도 되는 부분 같은데 우선 주석처리
         String UserInfo="";
 
         try{
@@ -139,6 +140,7 @@ public class Menu3Fragment extends Fragment {
         }catch (JSONException e) {
             e.printStackTrace();
         }
+        */
 
         return v;
 

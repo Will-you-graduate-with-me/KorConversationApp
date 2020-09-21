@@ -38,10 +38,12 @@ public class drive2Fragment extends Fragment {
         recyclerView_scrap = (RecyclerView)v.findViewById(R.id.recyclerView_scrap);
         linearLayoutManager = new LinearLayoutManager(v.getContext());
 
+        /* 구분선 필요없음
         recyclerView_scrap.addItemDecoration(
-                new DividerItemDecoration(v.getContext(),linearLayoutManager.getOrientation()));
+                new DividerItemDecoration(v.getContext(),linearLayoutManager.getOrientation()));*/
+
         recyclerView_scrap.setLayoutManager(linearLayoutManager);
-        ScrapDecoration spaceDecoration = new ScrapDecoration(90);
+        ScrapDecoration spaceDecoration = new ScrapDecoration(60);
         recyclerView_scrap.addItemDecoration(spaceDecoration);
 
         String sentenceInfo = "";
