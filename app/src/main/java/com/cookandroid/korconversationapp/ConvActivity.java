@@ -49,10 +49,11 @@ public class ConvActivity extends AppCompatActivity {
     Thread thread;
     Runnable task;
     boolean flag = true, video_init = true;
-    final String url_header = "@string/video_url_header";
+    final String url = " ";
     private FirebaseAuth mAuth ;
     Boolean singleResult;
     int all_count=0, wrong_count=0;
+    public String video_url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,8 @@ public class ConvActivity extends AppCompatActivity {
         skip = (TextView) findViewById(R.id.skip);
         kor_script.setMovementMethod(new ScrollingMovementMethod());
 
+        mAuth = FirebaseAuth.getInstance();
+
         Intent intent = new Intent(this.getIntent());
         part_no = intent.getStringExtra("part_no");
         unit_no = intent.getStringExtra("unit_no");
@@ -102,6 +105,20 @@ public class ConvActivity extends AppCompatActivity {
                     mRecognizer.destroy();
                     mRecognizer.cancel();
                 }
+                // 결과화면 보여주기 전에 먼저 recent_id 업데이트
+                mAuth = FirebaseAuth.getInstance();
+
+                Map<String, String> historyparams2 = new HashMap<String, String>();
+
+                historyparams2.put("user_id", mAuth.getUid());
+                historyparams2.put("part_no", part_no);
+                historyparams2.put("unit_no", unit_no);
+
+                System.out.println(mAuth.getUid()+"/"+ part_no + "/" + unit_no);
+
+                Task Taskforhistory2 = new Task("updateRecentID", historyparams2);
+
+                Taskforhistory2.execute(historyparams2);
 
                 // 결과 화면 보여주기
                 Intent i = new Intent(ConvActivity.this, AnalysisActivity.class);
@@ -140,6 +157,8 @@ public class ConvActivity extends AppCompatActivity {
         String scriptInfoKor = "";
         String scriptInfoEng = "";
         String caseInfo = "";
+        String urlInfo = "";
+
         try {
 
             Map<String, String> userparams_forKor = new HashMap<String, String>();
@@ -156,13 +175,21 @@ public class ConvActivity extends AppCompatActivity {
             countparams.put("part_no", part_no);
             countparams.put("unit_no", unit_no);
 
+            Map<String, String> urlparams = new HashMap<String, String>();
+            urlparams.put("user_id", mAuth.getUid());
+
+
             Task TaskforKor = new Task("selectScript", userparams_forKor);
             Task TaskforEng = new Task("selectScript", userparams_forEng);
             Task TaskforCase = new Task("selectUnitInfo", countparams);
+            Task TaskforUrl=new Task("selectUserInfo",urlparams);
+            //Task TaskforUrl=new Task("selectUserVideoID",urlparams);
 
             scriptInfoKor = TaskforKor.execute(userparams_forKor).get();
             scriptInfoEng = TaskforEng.execute(userparams_forEng).get();
             caseInfo = TaskforCase.execute(countparams).get();
+            urlInfo=TaskforUrl.execute(urlparams).get();
+            System.out.print("urlInfo : "+urlInfo);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -198,6 +225,17 @@ public class ConvActivity extends AppCompatActivity {
                 caseNumber = Integer.parseInt(info_case.get("case_SQ").toString());
             }
 
+            // video_id
+            JSONObject videoInfo = new JSONObject(urlInfo);
+            int video_id = Integer.parseInt(videoInfo.get("video_id").toString());
+            System.out.print("video_id : "+video_id);
+            if (video_id == 1) {
+                video_url = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/original_video/p";
+            } else if (video_id == 2) {
+                video_url = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/gogh_video/p";
+            } else {
+                video_url = "https://bucket-test-sy.s3.us-east-2.amazonaws.com/korea_video/p";
+            }
 
             textview_kor[0].setText(scriptK[0]);
             textview_eng[0].setText(scriptE[0]);
@@ -249,12 +287,12 @@ public class ConvActivity extends AppCompatActivity {
                             // 1. 기존 플레이어 지우기
                             customExoPlayerView.releasePlayer();
                             // 2. 새 링크 설정
-                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+                            customExoPlayerView.initializePlayer(video_url+part_no+"/"+script_id_kor[num]+".mp4");
                             customExoPlayerView.getPlayer().addListener(eventListener);
                         }
                         else{
                             // 처음으로 비디오 플레이어 사용하는 경우
-                            customExoPlayerView.initializePlayer("https://bucket-test-sy.s3.us-east-2.amazonaws.com/android_video/p"+part_no+"/"+script_id_kor[num]+".mp4");
+                            customExoPlayerView.initializePlayer(video_url+part_no+"/"+script_id_kor[num]+".mp4");
                             video_init = !video_init;
                             customExoPlayerView.getPlayer().addListener(eventListener);
                         }

@@ -53,8 +53,8 @@ public class RecommendListDataAdapter extends RecyclerView.Adapter<RecommendList
             public void onClick(View view) {
 
                 Intent intent = new Intent(v.getContext(),LoadingActivity.class);
-                intent.putExtra("kor",singleItem.getKor());
-                intent.putExtra("eng",singleItem.getEng());
+                intent.putExtra("part_no",singleItem.getPart_no());
+                intent.putExtra("unit_no",singleItem.getUnit_no());
                 mfragment.startActivity(intent);
             }
         });
